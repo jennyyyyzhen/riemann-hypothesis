@@ -1,5 +1,6 @@
 module
 
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCorrectionApproximateIdealSections
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMemberP
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeastVectorUniqueInClassModStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLatticeQuadraticSumGeDiagonal
@@ -60,21 +61,8 @@ namespace GlobalTheory.Poinc.SepLam
 
 theorem mem_of_forall_mem_sup_pow {V : Type} [CommRing V] [IsNoetherianRing V] [IsLocalRing V] (I : Ideal V) (hI : I ≠ ⊤)
     (z : V) (h : ∀ j : ℕ, z ∈ I ⊔ maximalIdeal V ^ j) : z ∈ I := by
-  haveI : Nontrivial (V ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hI
-  haveI : IsLocalRing (V ⧸ I) := IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective
-  haveI : IsLocalHom (Ideal.Quotient.mk I) := Function.Surjective.isLocalHom _ Ideal.Quotient.mk_surjective
-  have hmax : (maximalIdeal V).map (Ideal.Quotient.mk I) ≤ maximalIdeal (V ⧸ I) :=
-    Ideal.map_le_iff_le_comap.mpr fun x hx hu => hx (isUnit_of_map_unit (Ideal.Quotient.mk I) x hu)
-  have hbot := Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal (V ⧸ I)) (Ideal.IsMaximal.ne_top inferInstance)
-  have hz : Ideal.Quotient.mk I z ∈ ⨅ j : ℕ, maximalIdeal (V ⧸ I) ^ j := by
-    refine Ideal.mem_iInf.mpr fun j => ?_
-    obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.mp (h j)
-    rw [map_add (f := _), Ideal.Quotient.eq_zero_iff_mem.mpr ha, zero_add]
-    refine pow_le_pow_left' hmax j ?_
-    rw [← Ideal.map_pow]
-    exact Ideal.mem_map_of_mem _ hb
-  rw [hbot, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem] at hz
-  exact hz
+  intros
+  apply _root_.GlobalTheory.ApproxCorr.mem_of_forall_mem_sup <;> assumption
 
 end GlobalTheory.Poinc.SepLam
 
@@ -114,7 +102,7 @@ theorem lam_of_exact : ∀ (O : Type) [CommRing O] (bar : O → O) (q s : ℕ) (
     have := hqnn mu
     omega
   have hlead : ∀ nu : Fin s → Φ.X y, nu ≠ 0 → qW W (Φ.δ y i) mu₀ < qW W (Φ.δ y i) (mu₀ + N₁ • nu) :=
-    fun nu hnu => GlobalTheory.T.least_vector_unique_in_class_mod s W Φ.posW (Φ.X y) (Φ.δ y i) hsym (Φ.nonneg y i) ⊤ (fun mu _ h => hqpos mu h)
+    fun nu hnu => _root_.GlobalTheory.Poinc.LeastVec.least_lt_add_smul s W Φ.posW (Φ.X y) (Φ.δ y i) hsym (Φ.nonneg y i) ⊤ (fun mu _ h => hqpos mu h)
       mu₀ trivial hmu₀ (fun mu _ h => hmin mu h) N₁ hN nu trivial hnu
   set n₀ := (qW W (Φ.δ y i) mu₀).toNat with hn₀
   have hn₀z : (n₀ : ℤ) = qW W (Φ.δ y i) mu₀ := Int.toNat_of_nonneg (hqnn mu₀)
@@ -216,8 +204,6 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.Poinc.Sep
 attribute [local instance] Over.cartesianMonoidalCategory
 
-theorem _root_.GlobalTheory.T.fourierTermSystem_lam_of_exact_class_sums : ∀ (O : Type) [CommRing O] (bar : O → O) (q s : ℕ) (W : Matrix (Fin s) (Fin s) ℤ) (A : Type) [CommRing A] [IsLocalRing A] (Φ : VPre bar q W A) (N₁ : ℕ), 1 ≤ s → 3 ≤ N₁ → Φ.Exact N₁ → Φ.abelian₂ := by
-  first | exact @GlobalTheory.Poinc.SepLam.lam_of_exact
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierTermSystemLamOfExactClassSumsStatement =====

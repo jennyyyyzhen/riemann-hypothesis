@@ -4,52 +4,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.EqZeroOfIdealCompac
 public import Formalism.HermitianCurvature.ThetaExistenceInductiveFromPieces
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.IntegralLatticeRefinementIdentity
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.KernelQuotientFinite
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
@@ -72,41 +27,6 @@ theorem tube {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [Topologic
   obtain ⟨u, v, hu, -, hxu, hCv, huv⟩ := generalized_tube_lemma (isCompact_singleton (x := x0)) hC
     (hU.preimage hF) (by rintro ⟨a, b⟩ ⟨ha, hb⟩; rw [Set.mem_singleton_iff] at ha; subst ha; exact h b hb)
   exact ⟨u, hu.mem_nhds (hxu rfl), fun x hx y hy => huv ⟨hx, hCv hy⟩⟩
-
-theorem eq_zero_of_ideal (hD : LocalDatum K R ψ) (h0 : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (x : K)
-    (hx : ∀ y : K, x * y ∈ R) : x = 0 := by
-  have := hD.t2
-  have := hD.red
-  have step1 : ∀ W ∈ 𝓝 (0 : K), ∃ k : ℕ, k ≠ 0 ∧ (k : K) * x ∈ W := by
-    intro W hW
-    have hseq : ∀ n : ℕ, (n : K) * x ∈ (R : Set K) := fun n => by rw [mul_comm]; exact hx _
-    obtain ⟨c, -, hc⟩ := hD.isCompact.exists_mapClusterPt (f := atTop)
-      (u := fun n : ℕ => (n : K) * x) (by
-        rw [Filter.le_principal_iff, Filter.mem_map]; exact Filter.univ_mem' hseq)
-    have ht : Tendsto (Prod.fst - Prod.snd : K × K → K) (𝓝 c ×ˢ 𝓝 c) (𝓝 0) := by
-      simpa [nhds_prod_eq, sub_self] using
-        (continuous_fst.sub continuous_snd : Continuous (Prod.fst - Prod.snd : K × K → K)).tendsto (c, c)
-    obtain ⟨U, hU, hUW⟩ := Filter.mem_prod_self_iff.1 (ht hW)
-    have hfr := mapClusterPt_iff_frequently.1 hc U hU
-    rw [Filter.frequently_atTop] at hfr
-    obtain ⟨n, -, hn⟩ := hfr 0
-    obtain ⟨m, hm, hm'⟩ := hfr (n + 1)
-    refine ⟨m - n, by omega, ?_⟩
-    rw [Nat.cast_sub (by omega), sub_mul]
-    exact hUW (Set.mk_mem_prod hm' hn)
-  by_contra hne
-  have hxx : x * x ≠ 0 := fun h =>
-    hne (IsReduced.eq_zero x ⟨2, by simpa [sq] using h⟩)
-  obtain ⟨V, hV, hVR⟩ := tube (fun p : K × K => p.1 * p.2) (continuous_fst.mul continuous_snd) 0
-    (R : Set K) hD.isCompact {y | y ≠ x * x} isOpen_ne (by
-      intro y _; simp only [zero_mul, Set.mem_ofPred_eq]; exact fun h => hxx h.symm)
-  obtain ⟨k, hk, hkV⟩ := step1 V hV
-  obtain ⟨u, hu⟩ := h0 k hk
-  have := hVR _ hkV (x * ((u⁻¹ : Kˣ) : K)) (hx _)
-  apply this
-  have h1 : (k : K) * ((u⁻¹ : Kˣ) : K) = 1 := by rw [← hu]; simp
-  show (k : K) * x * (x * ((u⁻¹ : Kˣ) : K)) = x * x
-  linear_combination (x * x) * h1
 
 theorem small (hD : LocalDatum K R ψ) (h0 : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) {ϖ : Kˣ}
     (hϖ : (ϖ : K) ∈ R) (hϖ' : ∀ x : K, ∃ m : ℕ, (ϖ : K) ^ m * x ∈ R) (V : Set K)
@@ -167,7 +87,6 @@ theorem perp_bdd (hD : LocalDatum K R ψ) (h0 : ∀ n : ℕ, n ≠ 0 → IsUnit 
 
 end Formalism.FourierDecayAlt.P.A6x7
 
-open Matrix Formalism.DoubleCosetMeasures Formalism.FourierDecayAlt.A5 Formalism.FourierDecayAlt.A6
 open scoped ComplexConjugate
 
 namespace Formalism.FourierDecayAlt.P
@@ -194,8 +113,6 @@ theorem kernel_as_coset_sum : Formalism.FourierDecayAlt.A6.KpFromBB := by
 
 end Formalism.FourierDecayAlt.P
 
-open Matrix Formalism.DoubleCosetMeasures Formalism.FourierDecayAlt.A5 Formalism.FourierDecayAlt.A6 Filter Topology
-open scoped ComplexConjugate
 
 namespace Formalism.FourierDecayAlt.P.A6x7.Hess
 
@@ -471,7 +388,6 @@ theorem gauss_hessian_index_of_parts : Formalism.FourierDecayAlt.A6.GaussHessAss
 
 end Formalism.FourierDecayAlt.P
 
-open Matrix Formalism.DoubleCosetMeasures Formalism.FourierDecayAlt.A5 Formalism.FourierDecayAlt.A6 Filter Topology
 
 namespace Formalism.FourierDecayAlt.P.A6x7.Osc
 
@@ -546,7 +462,6 @@ alias oscillatory_integral_invariant := _root_.Formalism.FourierDecayAlt.P.A6x7.
 
 end Formalism.FourierDecayAlt.P
 
-open Matrix Formalism.DoubleCosetMeasures Formalism.FourierDecayAlt.A5 Formalism.FourierDecayAlt.A6 Filter Topology
 
 namespace Formalism.FourierDecayAlt.P.A6x7.admitted
 
@@ -659,7 +574,6 @@ alias admissible_gauss_sum_small := _root_.Formalism.FourierDecayAlt.P.A6x7.admi
 
 end Formalism.FourierDecayAlt.P
 
-open Matrix Formalism.DoubleCosetMeasures Formalism.FourierDecayAlt.A5 Formalism.FourierDecayAlt.A6 Filter Topology
 
 namespace Formalism.FourierDecayAlt.P.A6x7.Ind
 

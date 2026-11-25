@@ -10,64 +10,13 @@ public import Formalism.HermitianCurvature.HermitianCurvatureProofs.Block3MulBlo
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CoordinateSizesOfHypotheses
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.FormalDegreeBessel.FinalG
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeisenbergLeviConjugationMeasure
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.Monotonicity.Lemmas
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Presheaf
 
 -- This file was produced by scripts/clump.py from the modules listed below.
 -- Members: Formalism.HermitianCurvature.HermitianCurvatureProofs.JConvOfJDom, Formalism.HermitianCurvature.HermitianCurvatureProofs.JfJqSmoothOfNnMaj, Formalism.HermitianCurvature.HermitianCurvatureProofs.LUFactorOrbitBounds
@@ -302,8 +251,6 @@ lemma sum_split_Es {M : Type*} [AddCommMonoid M] (f : Fin (2 * r + k + 1) → M)
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
@@ -381,7 +328,6 @@ lemma det_Lm {n : Mat k r} (hn : n ∈ Nset k r) : (Lm n).det = 1 := by
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
-open Matrix
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.LU
 
@@ -563,7 +509,6 @@ lemma mn_lower_mul (L Y : Matrix (Fin r) (Fin r) ℂ) (hL : IsLU L) (a b : Fin r
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.LU
 
-open Matrix
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.LU
 
@@ -675,8 +620,6 @@ lemma norm_mul_entry {m n p : Type*} [Fintype n] (A : Matrix m n ℂ) (B' : Matr
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.LU
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
@@ -753,8 +696,6 @@ lemma U_bd (L Y U : Matrix (Fin r) (Fin r) ℂ) (hL : IsLU L) (hU : IsUU U) {Γ 
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
@@ -866,8 +807,6 @@ end main
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
@@ -1079,8 +1018,6 @@ end main
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
@@ -1169,8 +1106,6 @@ lemma det_eq_Dmin (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) :
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
@@ -1231,7 +1166,6 @@ theorem orbit (z z' : Fin (2 * r + k + 1) → ℂ) (K : Set (Mat k r)) (hK : IsC
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb
 
-open Matrix MeasureTheory Filter Topology
 open scoped ENNReal NNReal
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.NInt
@@ -1499,8 +1433,6 @@ end main
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.NInt
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Asm
 
@@ -1601,8 +1533,6 @@ lemma haar_finite {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ
 
 end Formalism.FourierDecayAlt.P.WeakDominationMajorants.Asm
 
-open Matrix MeasureTheory Filter Topology
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 namespace Formalism.FourierDecayAlt.P.WeakDominationMajorants.Asm
 

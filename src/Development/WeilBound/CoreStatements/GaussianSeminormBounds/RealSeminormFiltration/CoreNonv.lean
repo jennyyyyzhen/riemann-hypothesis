@@ -1,5 +1,6 @@
 module
 
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockJointMultiplicity.LoweringPartRightActionInlInr
 public import Formalism.LocalToGlobal.ThetaOperatorCommutation.RealTh
 public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.CoreDefs
 public import Mathlib.Analysis.InnerProductSpace.Orthogonal
@@ -132,9 +133,6 @@ theorem dl_XR (a : Ix p q) (l : Fin s) :
     dl p q r s (X (a, Sum.inr l)) = (1 : Pol p q r 0) ⊗ₜ[ℂ] (X (a, Sum.inr l) : Pol p q 0 s) := by
   simp [dl, dv]
 
-theorem dl_C (c : ℂ) : dl p q r s (C c) = c • ((1 : Pol p q r 0) ⊗ₜ[ℂ] (1 : Pol p q 0 s)) := by
-  rw [dl, aeval_C, Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def]
-
 theorem dl_mulL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
     dl p q r s (X (a, Sum.inl k) * f) =
       (LinearMap.mulLeft ℂ (X (a, Sum.inl k) : Pol p q r 0)).rTensor _ (dl p q r s f) := by
@@ -255,20 +253,7 @@ theorem dl_omR (a b : Ix p q) (k : Fin s) (f : Pol p q r s) :
 
 theorem act_unit (a b : Ix p q) :
     fockAct1 p q r s (Eab a b) = ∑ c : Ix r s, omE ((a, c) : Ln p q r s) (b, c) := by
-  simp only [fockAct1, LinearMap.comp_apply, LinearMap.flip_apply, kroneckerMapBilinear_apply_apply, omAct,
-    LinearMap.sum_apply, LinearMap.smulRight_apply, entryLinearMap_apply]
-  rw [Fintype.sum_prod_type]
-  simp only [kroneckerMap_apply, Eab, Matrix.single_apply, Matrix.one_apply, LinearMap.mul_apply']
-  rw [Finset.sum_eq_single a]
-  · refine Finset.sum_congr rfl (fun c _ => ?_)
-    rw [Finset.sum_eq_single (b, c)]
-    · simp
-    · rintro ⟨x2, d⟩ _ hl
-      by_cases h1 : b = x2 <;> by_cases h2 : c = d <;> simp_all
-    · simp
-  · intro x1 _ hx
-    simp [Ne.symm hx]
-  · simp
+  apply _root_.PI.WFJM.fockAct1_Eab <;> assumption
 
 section Form
 

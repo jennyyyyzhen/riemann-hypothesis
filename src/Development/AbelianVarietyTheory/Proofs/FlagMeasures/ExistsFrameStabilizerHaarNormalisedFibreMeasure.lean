@@ -351,7 +351,7 @@ theorem yv_w (hP : P.IsStd σ J T) (b : Fin (r + 1)) : hA (yv R P x b) (wv R P T
           map_zero, mul_zero]
       · simp [coef, hij]
 
-theorem cc_cond (hσ : ∀ e, σ (σ e) = e) (hJ : IsHermND σ J) (hP : P.IsStd σ J T) (b : Fin (r + 1)) :
+theorem cc_cond (hσ : ∀ e, σ (σ e) = e) (hP : P.IsStd σ J T) (b : Fin (r + 1)) :
     cc R T b + sigR R σ (cc R T b) + hA (wv R P T b) (wv R P T b) = 0 := by
   induction b using Fin.lastCases with
   | last =>
@@ -466,7 +466,7 @@ theorem Pm_unitary (hσ : ∀ e, σ (σ e) = e) (hJ : IsHermND σ J) (hP : P.IsS
       simp only [M]
       split_ifs with hk
       · exact eich_unitary _ _ (sigR_invol R σ hσ) (fun i j => JR_herm R σ J hJ i j) _ _ _
-          (yv_iso x hσ hJ hP _) (yv_w x hP _) (cc_cond hσ hJ hP _)
+          (yv_iso x hσ hJ hP _) (yv_w x hP _) (cc_cond hσ hP _)
       · simp [Formalism.UG.cT_one]
     rw [Formalism.UG.cT_mul]
     calc Formalism.UG.cT (sigR R σ) (Pm R σ J P T x k) * Formalism.UG.cT (sigR R σ) M * JR R J * (M * Pm R σ J P T x k)
@@ -1288,7 +1288,7 @@ theorem cgr_mem (hσ : ∀ x, σ (σ x) = x) {a : ℕ} (m : Matrix (Fin a) (Fin 
   intro p q
 
   simp only [cgr, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul,
-  _root_.PI.VolStabS.sigR_invol R σ hσ, Finset.sum_mul]
+  _root_.PI.VolStabSW.sigR_invol R σ hσ, Finset.sum_mul]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun l _ => ?_
   rw [hS]

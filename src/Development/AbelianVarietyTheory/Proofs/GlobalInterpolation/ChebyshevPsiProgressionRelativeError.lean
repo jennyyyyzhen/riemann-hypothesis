@@ -220,10 +220,6 @@ theorem zsym_differentiable_gammaFactor_inv (χ : DirichletCharacter ℂ q) :
 
 variable [NeZero q]
 
-theorem zsym_rootNumber_ne_zero {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrimitive) :
-    χ.rootNumber ≠ 0 := by
-  exact DirichletCharacter.rootNumber_ne_zero hχ
-
 noncomputable def zsymFactor (χ : DirichletCharacter ℂ q) (s : ℂ) : ℂ :=
   (q : ℂ) ^ ((1 - s) - 1 / 2) * χ.rootNumber * (χ.gammaFactor s)⁻¹ / (χ⁻¹.gammaFactor (1 - s))⁻¹
 
@@ -244,7 +240,7 @@ theorem zsymFactor_ne_zero {χ : DirichletCharacter ℂ q} (hχ : χ.IsPrimitive
     (h0 : 0 < s.re) (h1 : s.re < 1) : zsymFactor χ s ≠ 0 := by
   have g1 := zsym_gammaFactor_ne_zero χ h0
   have g2 := zsym_gammaFactor_ne_zero χ⁻¹ (s := 1 - s) (by simp; linarith)
-  have g3 := zsym_rootNumber_ne_zero hχ
+  have g3 := DirichletCharacter.rootNumber_ne_zero hχ
   have g4 : (q : ℂ) ^ ((1 - s) - 1 / 2) ≠ 0 := by
     simp [cpow_eq_zero_iff, NeZero.ne q]
   unfold zsymFactor
@@ -371,23 +367,6 @@ theorem sum_not_coprime_le (q N : ℕ) (hq : q ≠ 0) :
     _ ≤ (Nat.log 2 N : ℝ) * Real.log q := mul_le_mul_of_nonneg_left
       (GlobalTheory.PrincipalLogDeriv.sum_log_primeFactors_le q) (Nat.cast_nonneg _)
 
-/-- The non-coprime contribution depends only on the distinct prime factors of the level. -/
-theorem sum_not_coprime_le_card_log (q N : ℕ) (hq : q ≠ 0) :
-    ∑ n ∈ (Icc 1 N).filter (fun n => ¬ n.Coprime q), Λ n ≤
-      (q.primeFactors.card : ℝ) * Real.log N := by
-  rcases eq_or_ne N 0 with rfl | hN
-  · simp
-  refine (sum_not_coprime_eq q N hq).le.trans ?_
-  calc ∑ p ∈ q.primeFactors, (Nat.log p N : ℝ) * Real.log p
-      ≤ ∑ p ∈ q.primeFactors, Real.log N := by
-        apply Finset.sum_le_sum
-        intro p hp
-        have hp' := Nat.prime_of_mem_primeFactors hp
-        have h := Real.log_le_log (pow_pos (show (0 : ℝ) < p by exact_mod_cast hp'.pos) (Nat.log p N))
-          (show (p : ℝ) ^ Nat.log p N ≤ (N : ℝ) by exact_mod_cast Nat.pow_log_le_self p hN)
-        simpa only [Real.log_pow] using h
-    _ = (q.primeFactors.card : ℝ) * Real.log N := by rw [Finset.sum_const, nsmul_eq_mul]
-
 private theorem norm_sub_primitive_le_sum {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (N : ℕ) :
     ‖∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) -
       ∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ.primitiveCharacter (n : ZMod χ.conductor)‖ ≤
@@ -417,18 +396,6 @@ private theorem norm_sub_primitive_le_sum {q : ℕ} [NeZero q] (χ : DirichletCh
     have h := χ.primitiveCharacter_apply_of_isCoprime (a := (n : ℤ)) (Nat.isCoprime_iff_coprime.2 hn.2)
     push_cast at h
     rw [h, sub_self]
-
-theorem norm_sub_primitive_le_prime_logs {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (N : ℕ) :
-    ‖∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) -
-      ∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ.primitiveCharacter (n : ZMod χ.conductor)‖ ≤
-      ∑ p ∈ q.primeFactors, (Nat.log p N : ℝ) * Real.log p := by
-  exact (norm_sub_primitive_le_sum χ N).trans (sum_not_coprime_eq q N (NeZero.ne q)).le
-
-theorem norm_sub_primitive_le_card_log {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (N : ℕ) :
-    ‖∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) -
-      ∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ.primitiveCharacter (n : ZMod χ.conductor)‖ ≤
-      (q.primeFactors.card : ℝ) * Real.log N := by
-  exact (norm_sub_primitive_le_sum χ N).trans (sum_not_coprime_le_card_log q N (NeZero.ne q))
 
 theorem norm_sub_primitive_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (N : ℕ) :
     ‖∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) -

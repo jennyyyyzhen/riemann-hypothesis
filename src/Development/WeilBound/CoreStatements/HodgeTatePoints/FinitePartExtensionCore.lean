@@ -104,20 +104,6 @@ open GlobalTheory.AdicColimit
 
 variable {R : Type} [CommRing R] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R]
 
-theorem eq_zero_of_forall_mem_map (A : Type) [CommRing A] [Algebra R A] [Module.Finite R A] (x : A)
-    (h : ∀ e : ℕ, x ∈ (I ^ (e + 1)).map (algebraMap R A)) : x = 0 := by
-  have hI : I ≤ (⊥ : Ideal R).jacobson := IsAdicComplete.le_jacobson_bot I
-  have key := Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (M := A) I
-    (by simpa only [Ideal.jacobson_bot] using hI)
-  have hx : x ∈ (⨅ i : ℕ, I ^ i • (⊤ : Submodule R A)) := by
-    refine Submodule.mem_iInf _ |>.2 fun i => ?_
-    have h1 : x ∈ (I ^ (i + 1) • (⊤ : Submodule R A)) := by
-      rw [Ideal.smul_top_eq_map]
-      exact h i
-    exact Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ i)) h1
-  rw [key] at hx
-  simpa using hx
-
 theorem eq_of_reductions (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R]
     (X Y : Over (Spec (CommRingCat.of R))) [IsFinite X.hom] [IsFinite Y.hom] (f g : X ⟶ Y)
     (h : ∀ e, (Over.pullback (thick R I e)).map f = (Over.pullback (thick R I e)).map g) : f = g := by
@@ -216,7 +202,7 @@ theorem exists_qfGroup_kernel : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoet
     infer_instance
   · refine { isOver := ?_, mul := ?_, inj := ?_, kernel := ?_ }
     · show (𝟙 _ ≫ j.left) ≫ B.hom = A.hom ≫ 𝟙 _
-      simpa using Over.w j
+      simp
     · intro Y y z y₀ z₀ hy hz
       have hy' : y ≫ j = toIdMk Y ≫ y₀ := hv y₀ y (by rw [hy]; simp)
       have hz' : z ≫ j = toIdMk Y ≫ z₀ := hv z₀ z (by rw [hz]; simp)
@@ -1050,8 +1036,7 @@ theorem isIso_of_fibre (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing
   have hco : ⇑(φ.toLinearMap.lTensor (IsLocalRing.ResidueField R)) =
       ⇑(Algebra.TensorProduct.map (AlgHom.id R (IsLocalRing.ResidueField R)) φ) := by
     funext x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
+    induction x using TensorProduct.inductionOn with
     | tmul a b => simp
     | add x y hx hy => simp only [map_add (f := _), hx, hy]
   have hφ : Function.Bijective φ :=
@@ -1096,7 +1081,7 @@ theorem main (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (C A B
     rwa [toUnit_unique (pullback.snd _ _) (toUnit _)] at h
   have hKl := hK.map (Over.forget _)
   have hKl' : IsPullback (pullback.fst b e).left (pullback b e).hom b.left e.left := by
-    have hA : (toUnit (pullback b e)).left = (pullback b e).hom := by simpa using Over.w (toUnit (pullback b e))
+    have hA : (toUnit (pullback b e)).left = (pullback b e).hom := by simp
     rw [← hA]; exact hKl
   have hbfin : IsFinite b.left := by
     have : IsFinite (b.left ≫ B.hom) := by rw [Over.w b]; infer_instance
@@ -1107,7 +1092,7 @@ theorem main (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (C A B
   have hclosed : IsClosedImmersion (pullback.fst b e).left := by
     have he : IsClosedImmersion e.left := by
       have : IsClosedImmersion (e.left ≫ B.hom) := by
-        have : e.left ≫ B.hom = 𝟙 _ := by simpa using Over.w e
+        have : e.left ≫ B.hom = 𝟙 _ := by simp
         rw [this]; infer_instance
       exact IsClosedImmersion.of_comp _ B.hom
     exact MorphismProperty.of_isPullback hKl'.flip he
@@ -1483,7 +1468,8 @@ theorem pullTop_val {Y Z : Scheme.{0}} (f : Y ⟶ Z) (w : Γ(Z, ⊤)ˣ) :
     ((pullTop f w : Γ(Y, ⊤)ˣ) : Γ(Y, ⊤)) = f.appTop.hom (w : Γ(Z, ⊤)) :=
   map_rfl' _
 
-set_option synthInstance.maxHeartbeats 200000 in
+-- TODO: Stopgap for https://github.com/leanprover-community/riemann-hypothesis/issues/1038: remove once Mathlib lowers its priority.
+attribute [-instance] CategoryTheory.Monoidal.fromInducedMonoidal in
 theorem one_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Over S) [GrpObj B] (T : Over S') :
     (toUnit T ≫ η[(Over.pullback f).obj B]).left ≫ pullback.fst B.hom f = T.hom ≫ f ≫ η[B].left := by
   have e := congrArg (fun z => z.left) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom
@@ -1694,7 +1680,7 @@ theorem kernelOf : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Over S) [Gr
   refine ⟨_, g1, g2, _, g3, hp, ?_, h1⟩
   have hl := hp.map (Over.forget S)
   have hA : (toUnit (pullback ((𝟙 P) ^ N) η[P])).left = (pullback ((𝟙 P) ^ N) η[P]).hom := by
-    simpa using Over.w (toUnit (pullback ((𝟙 P) ^ N) η[P]))
+    simp
   have hl' : IsPullback (pullback.fst ((𝟙 P) ^ N) η[P]).left (pullback ((𝟙 P) ^ N) η[P]).hom ((𝟙 P) ^ N).left (η[P]).left := by
     rw [← hA]; exact hl
   exact MorphismProperty.of_isPullback hl' hfin

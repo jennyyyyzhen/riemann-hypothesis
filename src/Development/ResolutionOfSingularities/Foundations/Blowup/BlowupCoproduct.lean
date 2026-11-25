@@ -6,47 +6,7 @@ public import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupBas
 public import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupOpenCover
 import Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData
 public import Development.ResolutionOfSingularities.Foundations.Schemes.SchemeCoproduct
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 
 @[expose] public section
 
@@ -472,10 +432,6 @@ theorem exists_iso_pullback_coprod_desc_left {X A F : Scheme.{u}} (f : A ⟶ X) 
   · rw [Iso.symm_inv]
     exact hpb.isoPullback_hom_fst
 
-private theorem range_opens_ι {X : Scheme.{u}} (U : X.Opens) :
-    Set.range ⇑U.ι.base = (U : Set ↥X) := by
-  simp
-
 private theorem notMem_of_isCompl {X : Scheme.{u}} {U V : X.Opens} (h : IsCompl U V)
     (x : ↥X) (hU : x ∈ (U : Set ↥X)) (hV : x ∈ (V : Set ↥X)) : False := by
   have h1 : U ⊓ V = ⊥ := h.inf_eq_bot
@@ -505,9 +461,9 @@ private theorem range_fst_subset_range_inr_of_isCompl {X A F : Scheme.{u}} (f : 
   have hfa : f.base a = V.ι.base ((PullbackCone.snd s).base t) := by
     rw [← e2, ha, e1]
   refine notMem_of_isCompl h (f.base a) ?_ ?_
-  · rw [← range_opens_ι U]
+  · rw [← AlgebraicGeometry.Scheme.Opens.range_ι U]
     exact hf (Set.mem_range_self a)
-  · rw [hfa, ← range_opens_ι V]
+  · rw [hfa, ← AlgebraicGeometry.Scheme.Opens.range_ι V]
     exact Set.mem_range_self _
 
 private theorem isPullback_inr_coprod_desc {X A F : Scheme.{u}} (f : A ⟶ X) (g : F ⟶ X)

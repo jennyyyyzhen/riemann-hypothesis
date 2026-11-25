@@ -30,59 +30,10 @@ public import Formalism.UnipotentAdelicQuotients.EllipticRegularity.BaseLevel
 public import Formalism.UnipotentAdelicQuotients.EllipticRegularity.ConvolutionBound
 public import Formalism.UnipotentAdelicQuotients.EllipticRegularity.StepCore
 public import Formalism.UnipotentAdelicQuotients.EllipticRegularity.WeakFourier
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Analysis.Fourier.Notation
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 
 -- This file was produced by scripts/clump.py from the modules listed below.
 -- Members: Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEllRegBridge, Formalism.UnipotentAdelicQuotients.EllipticRegularity.Decompose, Formalism.UnipotentAdelicQuotients.EllipticRegularity.KernGr, Formalism.UnipotentAdelicQuotients.EllipticRegularity.KernDer, Formalism.UnipotentAdelicQuotients.EllipticRegularity.KernDil, Formalism.UnipotentAdelicQuotients.EllipticRegularity.ExistsSmoothExt, Formalism.UnipotentAdelicQuotients.EllipticRegularity.IteratedPartialFourierChar, Formalism.UnipotentAdelicQuotients.EllipticRegularity.Moments, Formalism.UnipotentAdelicQuotients.EllipticRegularity.PairingFourier, Formalism.UnipotentAdelicQuotients.EllipticRegularity.PairingLocal, Formalism.UnipotentAdelicQuotients.EllipticRegularity.SmoothOfLocallySmooth, Formalism.UnipotentAdelicQuotients.EllipticRegularity.SymbLower, Formalism.UnipotentAdelicQuotients.EllipticRegularity.WeightDiff, Formalism.UnipotentAdelicQuotients.EllipticRegularity.WeightedNormFinite, Formalism.UnipotentAdelicQuotients.EllRegCheck, Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEllRegW
@@ -1742,10 +1693,6 @@ theorem weightedNormLimit : EpsLimit := by
         obtain ⟨n, hn⟩ := hb.exists
         exact hn.trans (hB _ (hpos n) (hle1 n))
 
-private theorem rpow_le_rpow_of_le_of_exponent_nonpos {x y z : ℝ} (hx : 0 < x) (hxy : x ≤ y) (hz : z ≤ 0) :
-    y ^ z ≤ x ^ z := by
-  exact Real.rpow_le_rpow_of_nonpos hx hxy hz
-
 private theorem sq_one_add_rpow_mul_rpow_le_max_mul_rpow (s M ε t : ℝ) (hε : 0 < ε) (ht : 0 ≤ t) :
     ((1 + t) ^ (s / 2) * (1 + ε ^ 2 * t) ^ (-(M / 2))) ^ 2 ≤
       max ((min 1 (ε ^ 2)) ^ (-M)) ((max 1 (ε ^ 2)) ^ (-M)) * (1 + t) ^ (s - M) := by
@@ -1769,7 +1716,7 @@ private theorem sq_one_add_rpow_mul_rpow_le_max_mul_rpow (s M ε t : ℝ) (hε :
     · have hle : min 1 (ε ^ 2) * (1 + t) ≤ 1 + ε ^ 2 * t := by
         rw [mul_add, mul_one]; exact add_le_add (min_le_left _ _) (mul_le_mul_of_nonneg_right (min_le_right _ _) ht)
       calc (1 + ε ^ 2 * t) ^ (-M) ≤ (min 1 (ε ^ 2) * (1 + t)) ^ (-M) :=
-            rpow_le_rpow_of_le_of_exponent_nonpos (mul_pos ha hA) hle (by linarith)
+            Real.rpow_le_rpow_of_nonpos (mul_pos ha hA) hle (by linarith)
         _ = (min 1 (ε ^ 2)) ^ (-M) * (1 + t) ^ (-M) := Real.mul_rpow ha.le hA.le
         _ ≤ max ((min 1 (ε ^ 2)) ^ (-M)) ((max 1 (ε ^ 2)) ^ (-M)) * (1 + t) ^ (-M) :=
             mul_le_mul_of_nonneg_right (le_max_left _ _) hAp

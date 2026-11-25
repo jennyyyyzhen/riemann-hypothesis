@@ -53,13 +53,9 @@ open scoped Classical
 namespace PositivityTheory.Rg.BcB.F.MB
 
 open PositivityTheory.Rg.BcB.F.U (lpow lone)
-open PositivityTheory.Rg.BcN.F2 (mconv)
 open PositivityTheory.Rg.BcB.F.MT (MatchLin)
 
 section SlopeTestRemainingChoices
-
-theorem mb_finsum_mul {α : Type*} (c : ℂ) (g : α → ℂ) : ∑ᶠ i, c * g i = c * ∑ᶠ i, g i := by
-  exact (mul_finsum g c).symm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 

@@ -34,60 +34,14 @@ public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Statements
 public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeLogBound
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFinite
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeFsLogIntegrable
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeTangentAverage
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeFibreAverage
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BallAverageFibreCount
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChowDegreePos
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsDoubleComplexVanish
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Linter.Style
 
 -- This file was produced by scripts/clump.py from the modules listed below.
@@ -1032,6 +986,22 @@ set_option maxSynthPendingDepth 1
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalTheory.CompanionTheory.Ar.Short.Crofton
 open scoped ENNReal
 
+private theorem tsum_fibre_pts_eq_sum {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin n)))
+    (π : Fin (e + 1) → Fin n → ℂ) (hfin : (fibrePts S π).Finite)
+    (g : EuclideanSpace ℂ (Fin n) → ℝ≥0∞) :
+    ∑' y : fibrePts S π, g y = ∑ y ∈ hfin.toFinset, g y := by
+  haveI : Fintype (fibrePts S π) := hfin.fintype
+  rw [tsum_fintype]
+  exact (Finset.sum_subtype hfin.toFinset (fun y => hfin.mem_toFinset) g).symm
+
+private theorem ne_zero_of_mem_fibre_pts {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin n)))
+    (π : Fin (e + 1) → Fin n → ℂ) (y : EuclideanSpace ℂ (Fin n)) (hy : y ∈ fibrePts S π) :
+    y ≠ 0 := by
+  rintro rfl
+  obtain ⟨-, h0⟩ := hy
+  have h2 := congrArg (fun v : EuclideanSpace ℂ (Fin (e + 1)) => v.ofLp 0) h0
+  simp [linProj, firstCoordVec] at h2
+
 namespace GlobalTheory.CompanionTheory.Ar.Short.Crofton
 
 theorem fubini_study_sum_crofton {n e δ : ℕ} (h : HermNorm n) (u : Fin n → ℂ)
@@ -1044,10 +1014,7 @@ theorem fubini_study_sum_crofton {n e δ : ℕ} (h : HermNorm n) (u : Fin n → 
     have h1 := hfin.encard_eq_coe_toFinset_card
     rw [hc] at h1
     exact_mod_cast h1.symm
-  have hne0 : ∀ y ∈ fibrePts S π, y ≠ 0 := by
-    rintro y ⟨-, hy⟩ rfl
-    have h2 := congrArg (fun v : EuclideanSpace ℂ (Fin (e + 1)) => v.ofLp 0) hy
-    simp [linProj, firstCoordVec] at h2
+  have hne0 := ne_zero_of_mem_fibre_pts S π
   have hsum : ∀ y ∈ fibrePts S π, ∑ j, u j * h.pointOf y j ≠ 0 := by
     intro y hy h0
     have htop : logGap h u y = ⊤ := by simp [logGap, hne0 y hy, h0]
@@ -1061,11 +1028,7 @@ theorem fubini_study_sum_crofton {n e δ : ℕ} (h : HermNorm n) (u : Fin n → 
     simp [logGap, hne0 y hy, hsum y hy]
   have hnn : ∀ y ∈ fibrePts S π, 0 ≤ Real.log (h.norm u) - fsLog h u (h.pointOf y) := fun y hy =>
     sub_nonneg.2 (_root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsLog_pointOf_le_log_norm n h u y (hne0 y hy) (hsum y hy))
-  haveI : Fintype (fibrePts S π) := hfin.fintype
-  have htsum : ∑' z : fibrePts S π, logGap h u z = ∑ y ∈ hfin.toFinset, logGap h u y := by
-    rw [tsum_fintype]
-    exact (Finset.sum_subtype hfin.toFinset (fun y => hfin.mem_toFinset) (logGap h u)).symm
-  rw [htsum, ENNReal.toReal_sum (fun y hy => by
+  rw [tsum_fibre_pts_eq_sum S π hfin, ENNReal.toReal_sum (fun y hy => by
       rw [hval y (hfin.mem_toFinset.1 hy)]
       exact ENNReal.ofReal_ne_top)]
   rw [Finset.sum_congr rfl (fun y hy => by
@@ -1074,20 +1037,6 @@ theorem fubini_study_sum_crofton {n e δ : ℕ} (h : HermNorm n) (u : Fin n → 
     finsum_mem_eq_finite_toFinset_sum _ hfin]
 
 end GlobalTheory.CompanionTheory.Ar.Short.Crofton
-
-private theorem tsum_fibre_pts_eq_sum {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin n))) (π : Fin (e + 1) → Fin n → ℂ)
-    (hfin : (fibrePts S π).Finite) (g : EuclideanSpace ℂ (Fin n) → ℝ≥0∞) :
-    ∑' y : fibrePts S π, g y = ∑ y ∈ hfin.toFinset, g y := by
-  haveI : Fintype (fibrePts S π) := hfin.fintype
-  rw [tsum_fintype]
-  exact (Finset.sum_subtype hfin.toFinset (fun y => hfin.mem_toFinset) g).symm
-
-private theorem ne_zero_of_mem_fibre_pts {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin n))) (π : Fin (e + 1) → Fin n → ℂ)
-    (y : EuclideanSpace ℂ (Fin n)) (hy : y ∈ fibrePts S π) : y ≠ 0 := by
-  rintro rfl
-  obtain ⟨-, h0⟩ := hy
-  have h2 := congrArg (fun v : EuclideanSpace ℂ (Fin (e + 1)) => v.ofLp 0) h0
-  simp [linProj, firstCoordVec] at h2
 
 theorem GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsSum_crofton : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (u : Fin n → ℂ),

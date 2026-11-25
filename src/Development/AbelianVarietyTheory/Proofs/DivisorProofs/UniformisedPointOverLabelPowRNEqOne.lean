@@ -55,19 +55,8 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 open GlobalTheory.Poinc
 open MonObj
-attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LabelTorsion
-
-theorem pt_nsmul {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) (b : S.Gam)
-    (n : ℕ) : ρ.pt (n • b) = ρ.pt b ^ n := by
-  have h0 : ρ.pt 0 = 1 := by
-    have h := ρ.pt_add 0 0
-    rw [add_zero] at h
-    exact left_eq_mul.mp h
-  induction n with
-  | zero => rw [zero_smul, pow_zero, h0]
-  | succ n ih => rw [succ_nsmul, ρ.pt_add, ih, pow_succ]
 
 theorem pow_eq_one_of_over_label : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (b : S.Gam) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), x.left ≫ u.φ = spMap y₀ ≫ (ρ.pt b).left → x ^ (S.r * S.N) = 1 := by
   intro o Ω _ _ _ S ρ p _ y₀ u b x hx

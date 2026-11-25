@@ -68,32 +68,6 @@ theorem star_one_mem {x : K} (hx : x ∈ (1 : Submodule (𝓞 K) K)) : star x �
   refine Submodule.mem_one.2 ⟨⟨star (algebraMap (𝓞 K) K y), ?_⟩, rfl⟩
   exact (NumberField.RingOfIntegers.isIntegral_coe y).map (starRingEnd K).toIntAlgHom
 
-private theorem star_mem_mul_of_star_mem {M N : Submodule (𝓞 K) K} (hM : ∀ x ∈ M, star x ∈ M)
-    (hN : ∀ x ∈ N, star x ∈ N) : ∀ x ∈ M * N, star x ∈ M * N := by
-  intro x hx
-  refine Submodule.mul_induction_on hx (C := fun x => star x ∈ M * N) ?_ ?_
-  · intro m hm n hn
-    have hmn := Submodule.mul_mem_mul (hM m hm) (hN n hn)
-    rw [star_mul, mul_comm (star n) (star m)]
-    exact hmn
-  · intro a b ha hb
-    rw [star_add]
-    exact Submodule.add_mem _ ha hb
-
-theorem pow_star (𝔡 : Ideal (𝓞 K)) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℕ) :
-    ∀ x ∈ (((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ n : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K),
-      star x ∈ (((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ n : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) := by
-  rw [FractionalIdeal.coe_pow, FractionalIdeal.coe_coeIdeal]
-  have base : ∀ x ∈ IsLocalization.coeSubmodule K 𝔡, star x ∈ IsLocalization.coeSubmodule K 𝔡 := by
-    intro x hx
-    rw [IsLocalization.mem_coeSubmodule] at hx ⊢
-    obtain ⟨y, hy, rfl⟩ := hx
-    obtain ⟨z, hz, hz'⟩ := hs y hy
-    exact ⟨z, hz, hz'⟩
-  induction n with
-  | zero => intro x hx; rw [pow_zero] at hx ⊢; exact star_one_mem hx
-  | succ m ih => rw [pow_succ]; exact star_mem_mul_of_star_mem ih base
-
 theorem ipow_star (𝔡 : Ideal (𝓞 K)) (h0 : 𝔡 ≠ ⊥) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℤ)
     {x : K} (hx : x ∈ ipow 𝔡 n) : star x ∈ ipow 𝔡 n := by
   apply GlobalTheory.DegCnt.PosJ.star_mem_ipow <;> assumption
@@ -632,16 +606,7 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : 
 
 theorem s_Xa (G : FlagD H r) {s : V →ₗ[K] V} (hs : G.InN s) (a : ℕ) {y : V} (hy : y ∈ G.Xa a) :
     s y ∈ G.Xa a := by
-  obtain ⟨-, -, he, -⟩ := hs
-  have key : ∀ b : Fin r, b.val < a → s (G.e b.castSucc) ∈ G.Xa a := by
-    intro b hb
-    have h1 : s (G.e b.castSucc) - G.e b.castSucc ∈ G.Xa a := _root_.GlobalTheory.UnipStab.Xa_mono G hb.le (he b)
-    have h2 : G.e b.castSucc ∈ G.Xa a := Submodule.subset_span ⟨b, hb, rfl⟩
-    simpa using add_mem h1 h2
-  have hle : G.Xa a ≤ (G.Xa a).comap s := Submodule.span_le.2 (by
-    rintro _ ⟨b, hb, rfl⟩
-    exact key b hb)
-  exact hle hy
+  apply _root_.GlobalTheory.UnipStab.map_Xa <;> assumption
 
 theorem exists_lift [FiniteDimensional K V] (N : NF H r) (h0 : II N.F N.F' ⊓ N.F.Xa N.j = ⊥)
     (htop : N.Wt ⊔ (V0 N.F N.F' ⊔ N.Ist) = ⊤) (τ : K) (hτ : τ + star τ = 1) (s : V ≃ₗ[K] V)

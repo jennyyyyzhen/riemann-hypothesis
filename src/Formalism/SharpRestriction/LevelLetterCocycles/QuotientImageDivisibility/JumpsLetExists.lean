@@ -6,49 +6,6 @@ public import Formalism.SharpRestriction.LevelLetterCocycles.LocalizationQuotien
 public import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.ConstantCoeffQZeroEqP
 public import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.IndepOfSpan
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.ExistsInfFilVEqBot
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Mathlib.Tactic.Linter.Style
 
@@ -117,29 +74,6 @@ theorem filV_exh (z : V ⊗[Qp] BdR) : ∃ a : ℤ, z ∈ FilV PD (LL := LL) (V 
     obtain ⟨a₂, ha₂⟩ := h₂
     exact ⟨min a₁ a₂, add_mem (filVB_anti PD (min_le_left _ _) ha₁)
       (filVB_anti PD (min_le_right _ _) ha₂)⟩
-
-theorem coord_mem {ι : Type} (b : Basis ι Qp V) (a : ℤ) (z : V ⊗[Qp] BdR)
-    (hz : z ∈ FilV PD (LL := LL) (V := V) a) (i : ι) :
-    TensorProduct.equivFinsuppOfBasisLeft b z i ∈ PD.Fil a := by
-  obtain ⟨w, rfl⟩ := (mem_FilV_iff' PD a z).mp hz
-  clear hz
-  induction w using TensorProduct.induction_on with
-  | zero => simp
-  | tmul x y =>
-    simp only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, Submodule.subtype_apply,
-      TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]
-    exact Submodule.smul_of_tower_mem (PD.Fil a) _ y.2
-  | add w₁ w₂ h₁ h₂ =>
-    rw [map_add (f := _), map_add (f := _), Finsupp.add_apply]
-    exact add_mem h₁ h₂
-
-theorem filV_sep (z : V ⊗[Qp] BdR) (hz : ∀ a : ℤ, z ∈ FilV PD (LL := LL) (V := V) a) : z = 0 := by
-  apply (TensorProduct.equivFinsuppOfBasisLeft (Basis.ofVectorSpace Qp V)).injective
-  rw [map_zero]
-  ext i
-  rw [Finsupp.zero_apply]
-  refine PD.Fil_sep _ fun a => ?_
-  convert coord_mem PD (Basis.ofVectorSpace Qp V) a z (hz a) i
 
 private theorem exists_int_finset_subset_FilV (s : Finset (V ⊗[Qp] BdR)) :
     ∃ a : ℤ, ∀ z ∈ s, z ∈ Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := V) a := by

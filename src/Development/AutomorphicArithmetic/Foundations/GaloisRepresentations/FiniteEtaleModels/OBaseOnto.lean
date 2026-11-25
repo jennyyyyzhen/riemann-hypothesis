@@ -802,13 +802,10 @@ private theorem cop_pow {q n : ℕ} (hq : q.Prime) (hn : n ≠ 0) :
     (q ^ n.factorization q).Coprime (n / q ^ n.factorization q) :=
   Nat.Coprime.pow_left _ (Nat.coprime_ordCompl hq hn)
 
-private theorem prod_eq (q n : ℕ) : q ^ n.factorization q * (n / q ^ n.factorization q) = n :=
-  Nat.ordProj_mul_ordCompl_eq_self n q
-
 private theorem cg_split {M : Type} [AddCommGroup M] {q n : ℕ} (hq : q.Prime) (hn : n ≠ 0) {x y : M}
     (h₁ : Cg (q ^ n.factorization q) x y) (h₂ : Cg (n / q ^ n.factorization q) x y) : Cg n x y := by
   have h := cg_mul (cop_pow hq hn) h₁ h₂
-  rwa [prod_eq] at h
+  rwa [Nat.ordProj_mul_ordCompl_eq_self] at h
 
 private theorem sys_of {O M : Type} [Ring O] [AddCommGroup M] [Module O M] (B : LinearMap.BilinForm ℤ M)
     {q : ℕ} (hq : q.Prime) (G : ℕ → M →+ M)
@@ -845,7 +842,7 @@ private theorem sys_of {O M : Type} [Ring O] [AddCommGroup M] [Module O M] (B : 
     intro n hn D h1 h2
     have hc := Nat.isCoprime_iff_coprime.mpr (cop_pow hq hn)
     have h := hc.mul_dvd h1 h2
-    rwa [← Nat.cast_mul, prod_eq] at h
+    rwa [← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self] at h
   refine ⟨g, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro n hn c x
     have hn0 : n ≠ 0 := hn.ne'
@@ -941,7 +938,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.O.liftSys :
     obtain ⟨f, hf⟩ := hpow
     have hqf : (q : 𝓞 D.F) ^ f ∈ 𝔞 := hf (Ideal.pow_mem_pow (GlobalTheory.UPel.HT.ES.p_mem_uIdeal D r) f)
     have hn' : ((q ^ n.factorization q * (n / q ^ n.factorization q) : ℕ) : 𝓞 D.F) ∈ 𝔞 := by
-      rw [prod_eq]
+      rw [Nat.ordProj_mul_ordCompl_eq_self]
       exact hmem
     have hqa : (q : 𝓞 D.F) ^ n.factorization q ∈ 𝔞 :=
       pow_mem_of 𝔞 (Nat.coprime_ordCompl hq hn0).symm hn' hqf

@@ -51,65 +51,12 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubse
 public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LocalValuationLogNormsExistence
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameBorelChangeVectors
 import Formalism.LocalToGlobal.ProjectiveLattices.CompSplitPfD
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Lemma
-import Mathlib.Topology.Sheaves.Init
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.RingTheory.Henselian
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLineGenOn
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.SupAtUnit
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 import Development.AutomorphicArithmetic.FrobeniusLocalisation.LocStab
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Topology.Connected.Separation
-import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-import Mathlib.Tactic.TypeStar
-import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 -- This file was produced by scripts/clump.py from the modules listed below.
 -- Members: Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlatOnModelExistsRulSections, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CapelliComplements.KappaIntegralBound, Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsEigFrameOfFrPt, Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormLeOneIffLogValuation, Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.LineFunctionPlaceValuation, Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LineFnReadsLocalHeightSum, Development.AbelianVarietyTheory.Definitions.Foundations.NotFlatExistsOfIsEmpty, Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.UnfSectionNormBoundAtHeight, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicEmbeddingsConjugateOfUnits, Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteNormLocalBound, Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.FrameRatioConstantRational, Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.LineFunctionModelRatio, Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionTwoModelsRelay, Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionFiniteNorm, Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricComponentAlgClosed, Development.WeilBound.CoreStatements.ComplexPeriods.ComplexPointPeriods.PeriodPos, Development.WeilBound.CoreStatements.ComplexPeriods.ComplexPointPeriods.PeriodIn, Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyUniformizationTypeRelay, Development.AutomorphicSpectrum.Proofs.GeometryProofs.KroneckerCharacterFrameBound, Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsConstSectionKroneckerChar
@@ -700,14 +647,22 @@ def ofAt (V : Type) [CommRing V] : epsAt (𝟙 (Sp V)) ⟶ epsOver V V :=
 theorem ofAt_toAt (V : Type) [CommRing V] : ofAt V ≫ toAt V = 𝟙 _ :=
   Over.OverMorphism.ext (Category.comp_id _)
 
-def ptAt (V : Type) [CommRing V] : Over.mk (𝟙 (Sp V)) ⟶ ptOver V V :=
-  Over.homMk (𝟙 (Sp V)) ((Category.id_comp _).trans (pt_hom V))
+theorem id_comp_pt_hom (V : Type) [CommRing V] : 𝟙 (Sp V) ≫ spMap (algebraMap V V) = 𝟙 (Sp V) :=
+  (Category.id_comp _).trans (pt_hom V)
 
+def ptAt (V : Type) [CommRing V] : Over.mk (𝟙 (Sp V)) ⟶ ptOver V V :=
+  Over.homMk (U := Over.mk (𝟙 (Sp V))) (V := Over.mk (spMap (algebraMap V V))) (𝟙 (Sp V))
+    (id_comp_pt_hom V)
+
+/- The two sides have types `(Over.mk (𝟙 (Sp V))).left ⟶ G.left` and `(ptOver V V).left ⟶ G.left`.
+Stating the equation in `Sp V ⟶ G.left` keeps the kernel from comparing `𝟙 (Sp V)` with
+`spMap (algebraMap V V)` to see that these agree. -/
 theorem one_left_at (V : Type) [CommRing V] (G : Over (Sp V)) [GrpObj G] :
-    (1 : Over.mk (𝟙 (Sp V)) ⟶ G).left = (1 : ptOver V V ⟶ G).left := by
+    @Eq (Sp V ⟶ G.left) (1 : Over.mk (𝟙 (Sp V)) ⟶ G).left (1 : ptOver V V ⟶ G).left :=
   have h : ptAt V ≫ (1 : ptOver V V ⟶ G) = 1 := pre_one _
-  rw [← h, Over.comp_left]
-  exact Category.id_comp _
+  have h2 : @Eq (Sp V ⟶ G.left) (𝟙 (Sp V) ≫ (1 : ptOver V V ⟶ G).left)
+      (1 : Over.mk (𝟙 (Sp V)) ⟶ G).left := congrArg CommaMorphism.left h
+  h2.symm.trans (Category.id_comp _)
 
 end Frames
 

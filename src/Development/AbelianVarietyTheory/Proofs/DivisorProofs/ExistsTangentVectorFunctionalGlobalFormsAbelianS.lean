@@ -687,6 +687,16 @@ theorem exists_lieBasis_lift {K : Type} [Field K] (σ : R →+* K) (A : Over (Sp
           pullback.fst A.hom (Chart.fB R (Localization.Away r)) := by
       have := congrArg (fun q ↦ q.left) he
       simp only [Over.comp_left, Chart.pushR_left, Chart.spMap_left] at this
+      have hd : (Chart.dualMapS (Algebra.ofId R (Localization.Away r))).toRingHom =
+          Chart.dualMapR (algebraMap R (Localization.Away r)) := by
+        refine RingHom.ext fun x ↦ TrivSqZeroExt.ext ?_ ?_
+        · change (Chart.dualMapS _ x).fst = _
+          rw [Chart.dualMapS_fst]
+          exact (add_zero (algebraMap R (Localization.Away r) x.fst)).symm
+        · change (Chart.dualMapS _ x).snd = _
+          rw [Chart.dualMapS_snd]
+          exact (zero_add (algebraMap R (Localization.Away r) x.snd)).symm
+      rw [hd] at this
       rw [← LieAway.scaleS_toRingHom]
       exact this
     have e1 : Chart.dualMapR σ =

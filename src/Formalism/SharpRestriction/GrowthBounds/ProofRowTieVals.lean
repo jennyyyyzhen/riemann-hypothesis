@@ -15,47 +15,7 @@ import Formalism.LocalToGlobal.CharacterGerms.AbstractGermZeroCondition
 import Formalism.LocalToGlobal.CharacterGerms.CoeffSingleSubstOfLowDegree
 import Formalism.LocalToGlobal.CharacterGerms.ConstMemTypeSetOfNonneg
 import Formalism.LocalToGlobal.CharacterGerms.RowTieCartAdd
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Formalism.LocalToGlobal.CharacterGerms.EndomorphismLimitIntegral
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePLSmallMain
 import Formalism.LocalToGlobal.CharacterGerms.IntSProd
@@ -668,7 +628,7 @@ theorem pullback_exp_column (col : Fin 2) :
   rw [← MvPowerSeries.coe_substAlgHom hb, map_smul, MvPowerSeries.coe_substAlgHom]
   congr 1
   unfold FB.hL
-  rw [VP.eval_two_points_eq_subst _ _ _ rfl]
+  rw [VP.eval_two_points_eq_subst _ _ _]
   change MvPowerSeries.subst _ (VP.hAt Y (pt C dd 0) (comp1 (Y.B.actK C Y.w0) (pt C dd 0))) = _
   rw [VP.hAt_subst (u := pt C dd 0) (v := comp1 (Y.B.actK C Y.w0) (pt C dd 0)) (hA := hb0)
     (hu := fun i => by exact MvPowerSeries.constantCoeff_X _) (hv := fun i => by

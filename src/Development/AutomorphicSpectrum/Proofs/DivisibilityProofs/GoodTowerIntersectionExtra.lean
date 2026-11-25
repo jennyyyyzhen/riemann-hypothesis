@@ -47,70 +47,15 @@ public import Development.WeilBound.CoreStatements.VolumeEquality.DegPushTest
 public import Development.WeilBound.CoreStatements.VolumeEquality.DegPushUnit
 public import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 public import Development.WeilBound.CoreStatements.VolumeEquality.VolEqOfDegPush
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Linter.HaveILetI
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEquivalence
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ExistsIntSmulIsAdicIntegralInTensorBasis
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.PairRelationOfScaledRatio
-import Mathlib.CategoryTheory.Monoidal.Cartesian.Basic
-import Mathlib.CategoryTheory.Monoidal.Category
-import Mathlib.CategoryTheory.Monoidal.Mon
-import Mathlib.Topology.Sheaves.Presheaf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsLocalOrbitChart
@@ -681,51 +626,6 @@ theorem lat_core (𝔐 : HodgeCpt Y S y) (ψ : Ω₀ →+* Ω) (j : Li₀ →+ �
 
 end
 
-private theorem coordLat_lemma {S : Scheme} {R : Type} [CommRing R] {G : Over S} [GrpObj G]
-    {x : Spec (CommRingCat.of R) ⟶ S} {V : Type} [AddCommGroup V] [Module R V] (M : LieModel G x V)
-    {O : Type} [CommRing O] (act : OAct O G) : ∃ ρ : O →+* Module.End R V, M.IsActOf act.act ρ := by
-  have htan : ∀ (a : O) (e : V), IsTanAt G x (M.pt e ≫ act.act a) := by
-    intro a e
-    haveI := act.hom a
-    have h1 := M.tan e
-    simp only [IsTanAt] at h1 ⊢
-    rw [Over.comp_left, ← Category.assoc, h1, ← Over.comp_left, MonObj.one_comp]
-  choose F hF using fun a e => M.onto _ (htan a e)
-  have hadd : ∀ a e e', F a (e + e') = F a e + F a e' := by
-    intro a e e'
-    haveI := act.hom a
-    apply M.inj
-    rw [hF, M.add, M.add, hF, hF, MonObj.mul_comp]
-  have hsmul : ∀ a (r : R) e, F a (r • e) = r • F a e := by
-    intro a r e
-    apply M.inj
-    apply Over.OverMorphism.ext
-    simp only [hF, Over.comp_left, M.smul, Category.assoc]
-  let L : O → Module.End R V := fun a =>
-    { toFun := F a, map_add' := hadd a, map_smul' := hsmul a }
-  have hL : ∀ a e, M.pt (L a e) = M.pt e ≫ act.act a := hF
-  have hone : L 1 = 1 := by
-    ext e
-    apply M.inj
-    rw [hL, act.one, Category.comp_id]
-    rfl
-  have hmul : ∀ a b, L (a * b) = L a * L b := by
-    intro a b
-    ext e
-    apply M.inj
-    rw [Module.End.mul_apply, hL, hL, hL, show a * b = b * a from mul_comm a b, act.mul, Category.assoc]
-  have haddL : ∀ a b, L (a + b) = L a + L b := by
-    intro a b
-    ext e
-    apply M.inj
-    rw [LinearMap.add_apply, M.add, hL, hL, hL, act.add, MonObj.comp_mul]
-  have hzero : L 0 = 0 := by
-    have h := haddL 0 0
-    rw [add_zero] at h
-    exact add_left_cancel (h.symm.trans (add_zero _).symm)
-  exact ⟨{ toFun := L, map_one' := hone, map_mul' := hmul, map_zero' := hzero, map_add' := haddL },
-    fun a e => hL a e⟩
-
 private theorem coordLat_lemma_2 {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X X' : Scheme}
     {t : SAB H X} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f) {Ω₀ Ω : Type} [Field Ω₀] [Field Ω]
     {ξ₀ : Sp Ω₀ ⟶ X} {ξ : Sp Ω ⟶ X'} {ψ : Ω₀ →+* Ω} {V V' : Type} [AddCommGroup V] [Module Ω₀ V]
@@ -751,7 +651,8 @@ theorem coordLat : CoordLat := by
   haveI : NumberField c.F := ⟨⟩
   haveI : CharZero 𝔐'.Ω₀ := (RingHom.charZero_iff 𝔐'.fn.injective).mpr
     ((RingHom.charZero_iff 𝔐'.cst.injective).mp inferInstance)
-  obtain ⟨ρ₀, hact⟩ := coordLat_lemma Fl.M₀ Y.t.act
+  obtain ⟨ρ₀, hact, -⟩ := lieModel_exists_unique_act _ _ _ _ _ Fl.M₀
+    _ Y.t.act.act Y.t.act.hom Y.t.act.one Y.t.act.mul Y.t.act.add
   have hβ : Function.Injective (algebraMap (𝓞 c.F) c.F) := IsFractionRing.injective _ _
   obtain ⟨r, hr⟩ : ∃ r : 𝓞 c.F →+* 𝔐'.Ω₀, 𝔐'.ξ₀ ≫ Y.s = spMap r :=
     ⟨(Spec.preimage (𝔐'.ξ₀ ≫ Y.s)).hom, by simp [spMap, Spec.map_preimage]⟩

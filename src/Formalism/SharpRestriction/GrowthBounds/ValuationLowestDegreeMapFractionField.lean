@@ -1,53 +1,8 @@
 module
 
 public import Formalism.SharpRestriction.GrowthBounds.SourceCleaning
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Flat.Basic
 public import Mathlib.RingTheory.MvPolynomial.EulerIdentity
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TensorProduct.MvPolynomial
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
@@ -1378,18 +1333,6 @@ theorem li_allDeg (O : Type) [CommRing O] (N n : ℕ) (LL : Letters (Fin N))
     rw [e]
     exact h3
 
-theorem li_sum_inl {R σ τ : Type} [CommRing R] (p : MvPolynomial σ R) :
-    sumAlgEquiv R σ τ (rename Sum.inl p) = MvPolynomial.map C p :=
-  DFunLike.congr_fun (sumAlgEquiv_comp_rename_inl R σ τ) p
-
-theorem li_sum_inr {R σ τ : Type} [CommRing R] (q : MvPolynomial τ R) :
-    sumAlgEquiv R σ τ (rename Sum.inr q) = C q :=
-  DFunLike.congr_fun (sumAlgEquiv_comp_rename_inr R σ τ) q
-
-theorem li_key {R σ τ : Type} [CommRing R] (p : MvPolynomial σ R) (q : MvPolynomial τ R) (m : σ →₀ ℕ) :
-    AddMonoidAlgebra.coeff (sumAlgEquiv R σ τ (rename Sum.inl p * rename Sum.inr q)) m = AddMonoidAlgebra.coeff p m • q := by
-  rw [map_mul, li_sum_inl, li_sum_inr, mul_comm, coeff_C_mul, coeff_map, mul_comm, ← smul_eq_C_mul]
-
 theorem li_ext {R : Type} [CommRing R] {σ τ α β : Type} (u : α → MvPolynomial σ R) (v : β → MvPolynomial τ R)
     (hu : LinearIndependent R u) (hv : LinearIndependent R v) :
     LinearIndependent R
@@ -1412,10 +1355,6 @@ theorem li_ext {R : Type} [CommRing R] {σ τ α β : Type} (u : α → MvPolyno
     (LinearMap.ker_eq_bot.mpr e.injective)
   change LinearIndependent R (fun i : α × β => e (TensorProduct.tmul R (u i.1) (v i.2))) at h
   simpa only [hprod] using h
-
-open Formalism.MainNotions.SelectionLemmas in
-theorem li_segE_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) : Function.Injective (segE F j) :=
-  fun _ _ h => (OrderIso.injective _) (Subtype.ext h)
 
 
 open Formalism.MainNotions.SelectionLemmas in

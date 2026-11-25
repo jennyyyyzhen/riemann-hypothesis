@@ -77,7 +77,7 @@ open Finset Matrix MeasureTheory Filter Topology Metric
 
 namespace ReciprocityTheory.ChartRestriction.DS.HExp
 
-open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
+open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7 Formalism.BasicNotions.Examples₂.CD
 
 variable {n : ℕ}
 
@@ -177,7 +177,7 @@ open scoped ENNReal NNReal
 
 namespace ReciprocityTheory.ChartRestriction.DS.HExp
 
-open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
+open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7 Formalism.BasicNotions.Examples₂.CD
 
 variable {n : ℕ}
 
@@ -305,7 +305,7 @@ open scoped ENNReal NNReal
 
 namespace ReciprocityTheory.ChartRestriction.DS
 
-open ReciprocityTheory.ChartRestriction.DS.S7 ReciprocityTheory.ChartRestriction.DS.HExp
+open ReciprocityTheory.ChartRestriction.DS.S7 ReciprocityTheory.ChartRestriction.DS.HExp Formalism.BasicNotions.Examples₂.CD
 
 variable {n : ℕ}
 
@@ -322,7 +322,7 @@ theorem haar_exp_density {ε : Fin n → Bool} (μ : Measure (UJ ε)) [μ.IsHaar
   haveI : (volume : Measure (KCo ε)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _
   haveI : (volume : Measure (GCo ε)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _
   have hlamH : lam.IsAddHaarMeasure := eC.isAddHaarMeasure_map volume
-  obtain ⟨c, hc0, hct, hup, hdown⟩ := (ujChart ε).exists_density_unif' inferInstance mV ⟨rfl⟩ _
+  obtain ⟨c, hc0, hct, hup, hdown⟩ := HExp.Chart.exists_density_unif' (ujChart ε) inferInstance mV ⟨rfl⟩ _
     inferInstance inferInstance μ inferInstance lam (by exact hlamH)
   have himg : ∀ S : Set (GCo ε), (ujChart ε).img (eC '' S) = expSet S := by
     intro S
@@ -403,7 +403,7 @@ open Matrix Filter Topology
 
 namespace ReciprocityTheory.ChartRestriction.DS.HPol
 
-open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
+open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7 Formalism.BasicNotions.Examples₂.CD
 
 variable {n : ℕ}
 
@@ -422,24 +422,6 @@ theorem exp_strict :
 variable (n) in
 def logM : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ :=
   (exp_strict (n := n)).localInverse _ _ _
-
-theorem logM_exp : ∀ᶠ X in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), logM n (NormedSpace.exp X) = X := by
-  exact (exp_strict (n := n)).eventually_left_inverse
-
-theorem exp_logM : ∀ᶠ h in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), NormedSpace.exp (logM n h) = h := by
-  have h := (exp_strict (n := n)).eventually_right_inverse
-  rw [NormedSpace.exp_zero] at h
-  exact h
-
-theorem logM_one : logM n 1 = 0 := by
-  have h := (exp_strict (n := n)).localInverse_apply_image
-  rw [NormedSpace.exp_zero] at h
-  exact h
-
-theorem logM_strict : HasStrictFDerivAt (logM n) (ContinuousLinearMap.id ℝ _) 1 := by
-  have h := (exp_strict (n := n)).to_localInverse
-  rw [NormedSpace.exp_zero] at h
-  exact h
 
 end Log
 
@@ -608,7 +590,7 @@ open scoped NNReal ENNReal
 
 namespace ReciprocityTheory.ChartRestriction.DS.HPol
 
-open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
+open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7 Formalism.BasicNotions.Examples₂.CD
 
 variable {n : ℕ}
 
