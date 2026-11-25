@@ -3,7 +3,6 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFromBase
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueScalar
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpBundleFibre
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UnivIdentity
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FlatBCSec
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
@@ -155,17 +154,6 @@ end Normalised
 section Omega
 
 open GlobalTheory.UT GlobalTheory.UT.SymFrame
-
-variable {V V₁ W₀ : Type} [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] [CommRing W₀]
-  (W : Matrix (Fin 8) (Fin 8) ℤ) (ρ : V →+* V₁) (Q : Data V) (D : DegPre V₁)
-  (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B)) (B₀ : Over (Sp W₀)) [GrpObj B₀] [IsCommMonObj B₀]
-  (β₂ : (G2 Q.B).left ⟶ (G2 B₀).left)
-
-abbrev piB (p : (Fin 8 × Fin 8) × PUnit × ULift.{0} (Finset (Fin 2))) : D.P.A.left ⟶ B₀.left :=
-  sharpPair ρ Q D pr p.1.1 p.1.2 ≫ β₂ ≫ (psum B₀ (x2 B₀) p.2.2.down).left
-
-abbrev exB (p : (Fin 8 × Fin 8) × PUnit × ULift.{0} (Finset (Fin 2))) : ℤ :=
-  W p.1.1 p.1.2 * (1 * (-1) ^ (2 - p.2.2.down.card))
 
 end Omega
 

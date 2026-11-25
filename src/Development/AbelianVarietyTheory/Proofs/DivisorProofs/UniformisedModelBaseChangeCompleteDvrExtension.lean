@@ -15,47 +15,6 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOneOfFinit
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ImportsTer
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NormPsiPullLocalRingsOfIntegers
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkInjectiveClosed
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDescOfPoints
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InjectiveOfIsAlgebraic
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCommonField
@@ -67,10 +26,9 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkBaseCh
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkDescendsAlongBaseChange
 import Mathlib.Tactic.Linter.Style
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
-import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 -- This file was produced by scripts/clump.py from the modules listed below.
--- Members: Development.AbelianVarietyTheory.BlockTheory.CMModuli.TateUniformizationInput, Development.AbelianVarietyTheory.BlockTheory.CMModuli.UniformTorsionIsomorphism, Development.AbelianVarietyTheory.Proofs.ModuliProofs.ArcClauseOfNotFrac, Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedModelBaseChangeCompleteDvrExtension
+-- Members: Development.AbelianVarietyTheory.BlockTheory.CMModuli.TateUniformizationInput, Development.AbelianVarietyTheory.Proofs.ModuliProofs.ArcClauseOfNotFrac, Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedModelBaseChangeCompleteDvrExtension
 
 -- ===== clump member: Development.AbelianVarietyTheory.BlockTheory.CMModuli.TateUniformizationInput =====
 -- clump-header: {"m": "Development.AbelianVarietyTheory.BlockTheory.CMModuli.TateUniformizationInput", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.CMModuli.TorusGraphMaps\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\n\n"}
@@ -99,90 +57,11 @@ def QkTower (m : ℕ) {k n : ℕ} (p : QkPt P F k) (p' : QkPt P F n) : Prop :=
 
 end Points
 
-section Lie
-
-def ringActToOAct {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {O : Type} [CommRing O]
-    (ra : RingAct A O) : Geo.Tor.OAct O A where
-  act := ra.act
-  hom := ra.hom
-  one := ra.map_one
-  mul := fun a b => by rw [_root_.mul_comm, ra.map_mul]
-  add := fun a b => ra.map_add a b
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-
-def torusLieEigen (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] (k : Type) [Field k]
-    (τ : 𝓞 E →+* k) : Submodule k (X →+ k) where
-  carrier := {v | ∀ (a : 𝓞 E) (χ : X), v (H.bar a • χ) = τ a * v χ}
-  add_mem' := fun {v w} hv hw a χ => by
-    simp only [AddMonoidHom.add_apply, hv a χ, hw a χ, mul_add]
-  zero_mem' := fun a χ => by simp
-  smul_mem' := fun c v hv a χ => by
-    simp only [AddMonoidHom.smul_apply, hv a χ, smul_eq_mul]
-    ring
-
-variable {R : Type} [CommRing R] [IsDomain R]
-
-def GtLieMult (H : Host E) {P : DegPre R} [Module (𝓞 E) P.X]
-    (ac : letI := hostStar H; P.OAct (𝓞 E)) (k : Type) [Field k] [Algebra (FractionRing R) k]
-    (τ : 𝓞 E →+* k) (n : ℕ) : Prop :=
-  letI := hostStar H
-  ∃ nB : ℕ, LieMult (ringActToOAct ac.onB.toRingAct) (DegPre.jFR (R := R) k) τ nB ∧
-    nB + Module.finrank k (torusLieEigen H P.X k τ) = n
-
-def GtDetCond {H : Host E} (D : Datum H) {P : DegPre R} [Module (𝓞 E) P.X]
-    (ac : letI := hostStar H; P.OAct (𝓞 E)) (k : Type) [Field k] [Algebra (FractionRing R) k]
-    (ρ : k) : Prop :=
-  ∀ τ : 𝓞 E →+* k, (τ H.rt = ρ → GtLieMult H ac k τ D.p) ∧ (τ H.rt ≠ ρ → GtLieMult H ac k τ D.q)
-
-end Lie
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 section Levels
 
-variable {R : Type} [CommRing R] [IsDomain R]
-
-structure QTateIso (D : Datum H) {P : DegPre R} [Module (𝓞 E) P.X]
-    (ac : letI := hostStar H; P.OAct (𝓞 E)) (k : Type) [Field k] [Algebra (FractionRing R) k] where
-  ζ : ℕ+ → kˣ
-  ζ_prim : ∀ n : ℕ+, IsPrimitiveRoot (ζ n) (n : ℕ)
-  ζ_pow : ∀ n m : ℕ+, ζ (n * m) ^ (m : ℕ) = ζ n
-  ev : ∀ n : ℕ+, D.La → QkPt P k (n : ℕ)
-  add : ∀ n a a', TorusGraphMaps.QkAdd (ev n a) (ev n a') (ev n (a + a'))
-  lin : ∀ n (x : 𝓞 E) a, (letI := hostStar H; QkSmul ac x (ev n a) (ev n (x • a)))
-  ker : ∀ n a, QkZero (ev n a) ↔ ∃ a', a = (n : ℕ) • a'
-  onto : ∀ (n : ℕ+) (p : QkPt P k (n : ℕ)), ∃ a, QkPt.Equiv P k (ev n a) p
-  tower : ∀ (n m : ℕ+) a, QkTower (m : ℕ) (ev (n * m) a) (ev n a)
-  isom : ∀ (n : ℕ+) a a', WeilQkIs P k (n : ℕ) (ev n a) (ev n a') ((ζ n ^ D.EF a a' : kˣ) : k)
-
-structure QLevel (D : Datum H) (l : Level H) {P : DegPre R} [Module (𝓞 E) P.X]
-    (ac : letI := hostStar H; P.OAct (𝓞 E)) (k : Type) [Field k] [Algebra (FractionRing R) k] where
-  eta : D.La → QkPt P k l.M
-  eta_add : ∀ a a', TorusGraphMaps.QkAdd (eta a) (eta a') (eta (a + a'))
-  eta_lin : ∀ (x : 𝓞 E) a, (letI := hostStar H; QkSmul ac x (eta a) (eta (x • a)))
-  eta_ker : ∀ a, QkZero (eta a) ↔ a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)
-  eta_onto : ∀ p : QkPt P k l.M,
-    (∀ x ∈ l.Mb, ∃ q : QkPt P k l.M, (letI := hostStar H; QkSmul ac x p q) ∧ QkZero q) →
-    ∃ a, QkPt.Equiv P k (eta a) p
-  etaA : D.La → QkPt P k l.A
-  etaA_add : ∀ a a', TorusGraphMaps.QkAdd (etaA a) (etaA a') (etaA (a + a'))
-  etaA_lin : ∀ (x : 𝓞 E) a, (letI := hostStar H; QkSmul ac x (etaA a) (etaA (x • a)))
-  etaA_ker : ∀ a, QkZero (etaA a) ↔ ∃ a', a = l.A • a'
-  etaA_onto : ∀ p : QkPt P k l.A, ∃ a, QkPt.Equiv P k (etaA a) p
-
-abbrev levelM (l : Level H) : ℕ+ := ⟨l.M, lt_of_lt_of_le (by norm_num) l.three_le⟩
-
 abbrev levelA (l : Level H) : ℕ+ := ⟨l.A, l.A_pos⟩
-
-def QTateIso.Induces {D : Datum H} {l : Level H} {P : DegPre R} [Module (𝓞 E) P.X]
-    {ac : letI := hostStar H; P.OAct (𝓞 E)} {k k' : Type} [Field k] [Algebra (FractionRing R) k]
-    [Field k'] [Algebra (FractionRing R) k'] (I : QTateIso D ac k') (lv : QLevel D l ac k)
-    (σ : k →ₐ[FractionRing R] k') (z : k') : Prop :=
-  (I.ζ (levelA l) : k') = z ∧
-    (∀ a, QkMap (k := l.A) σ (lv.etaA a) (I.ev (levelA l) a)) ∧
-    ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La),
-      QkMap (k := l.M) σ (lv.eta a) (I.ev (levelM l) a)
 
 end Levels
 
@@ -190,126 +69,15 @@ section Base
 
 variable {l : Level H} (c : Coeff l)
 
-def coeffRt : c.F := IntermediateField.inclusion c.le (baseKA l).ρ
-
 def coeffZeta : c.F := IntermediateField.inclusion c.le (baseKA l).ζ
 
-variable {c}
-
-def IsFracImage {O : Type} [CommRing O] (β : O →+* c.F) : Prop :=
-  ∀ x : c.F, ∃ a s : O, β s ≠ 0 ∧ x * β s = β a
-
 end Base
-
-structure ArcInput (D : Datum H) {l : Level H} (c : Coeff l) {O : Type} [CommRing O]
-    (β : O →+* c.F) (O' : Type) [CommRing O'] [IsDomain O'] (b : O →+* O') where
-
-  frac : IsFracImage β
-
-  gam : c.F →+* FractionRing O'
-  gam_over : ∀ x : O, gam (β x) = algebraMap O' (FractionRing O') (b x)
-
-  P : DegPre O'
-  psi_even : P.PsiEven
-  tau_bimult : P.TauBimult
-  [mod : Module (𝓞 E) P.X]
-
-  ac : letI := hostStar H; P.OAct (𝓞 E)
-  nontriv : Nontrivial P.X
-  psi_gen : ∀ y : P.X, PsiGenOn P y Set.univ
-  through : PsiThroughHost H ac
-
-  be : LinearMap.BilinForm ℤ P.X
-  be_symm : ∀ y z, be y z = be z y
-  be_pos : ∀ y, y ≠ 0 → 0 < be y y
-  be_adj : ∀ (a : 𝓞 E) y z, be (a • y) z = be y (H.bar a • z)
-  be_dvd : ∀ y z, (2 * l.M' : ℤ) ∣ be y z
-
-  lev : QLevel D l ac (FractionRing O')
-  det : GtDetCond D ac (AlgebraicClosure (FractionRing O'))
-    (algebraMap (FractionRing O') _ (gam (coeffRt c)))
-  induced : ∃ I : QTateIso D ac (AlgebraicClosure (FractionRing O')),
-    I.Induces lev (Algebra.ofId (FractionRing O') _)
-      (algebraMap (FractionRing O') _ (gam (coeffZeta c)))
-
-attribute [instance] ArcInput.mod
-
-namespace ArcInput
-
-variable {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
-  {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
-
-end ArcInput
 
 end GlobalTheory.IndefiniteRowSideFullHecke.TateUniformizationInput
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.BlockTheory.CMModuli.TateUniformizationInput =====
-
--- ===== clump member: Development.AbelianVarietyTheory.BlockTheory.CMModuli.UniformTorsionIsomorphism =====
--- clump-header: {"m": "Development.AbelianVarietyTheory.BlockTheory.CMModuli.UniformTorsionIsomorphism", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.DegOUnif\npublic import Development.AbelianVarietyTheory.BlockTheory.CMModuli.TorusGraphMaps\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.DegExp\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
-section -- clump:auto
-@[expose] public section
-
-noncomputable section
-
-open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory
-  CartesianMonoidalCategory MonObj NumberField
-
-namespace GlobalTheory.IndefiniteRowSideFullHecke.UniformTorsionIsomorphism
-
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory.IndefiniteRowSideFullHecke.TorusGraphMaps
-open scoped CategoryTheory.Obj
-
-def ringActOf {O : Type} [CommRing O] {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
-    (a : Geo.Tor.OAct O G) : RingAct G O where
-  act := a.act
-  hom := a.hom
-  map_one := a.one
-  map_mul := fun x y => by rw [_root_.mul_comm x y]; exact a.mul y x
-  map_add := fun x y => a.add x y
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-variable {R : Type} [CommRing R] [IsDomain R]
-
-structure OData (H : Host E) (I : Ideal R) where
-
-  D : DegData R I
-
-  [mod : Module (𝓞 E) D.toPre.X]
-
-  ac : letI := hostStar H; D.OAct (𝓞 E)
-  through : PsiThroughHost H ac
-
-attribute [instance] OData.mod
-
-variable {H : Host E} {I : Ideal R}
-
-structure OUnif (t : SAB H (Spec (CommRingCat.of R))) (Δ : OData H I) where
-
-  A : PolAV (Spec (CommRingCat.of (FractionRing R)))
-
-  actA : letI := hostStar H; A.OAct (𝓞 E)
-
-  U : Unif I Δ.D A t.G
-  LG_eq : U.LG = t.PP
-  cub_eq : HEq U.cubG t.cub
-  lin : letI := hostStar H; U.toUnifPre.OLinear (𝓞 E) Δ.ac actA (ringActOf t.act)
-
-namespace OUnif
-
-variable {t : SAB H (Spec (CommRingCat.of R))} {Δ : OData H I} (u : OUnif t Δ)
-variable (F : Type) [Field F] [Algebra (FractionRing R) F]
-
-end OUnif
-
-end GlobalTheory.IndefiniteRowSideFullHecke.UniformTorsionIsomorphism
-end -- clump:auto
-end -- clump:auto
-end -- clump:auto
--- ===== end clump member: Development.AbelianVarietyTheory.BlockTheory.CMModuli.UniformTorsionIsomorphism =====
 
 -- ===== clump member: Development.AbelianVarietyTheory.Proofs.ModuliProofs.ArcClauseOfNotFrac =====
 -- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.ModuliProofs.ArcClauseOfNotFrac", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsShiftGen\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import Development.AbelianVarietyTheory.BlockTheory.CMModuli.TateUniformizationInput\nimport Development.AbelianVarietyTheory.BlockTheory.CMModuli.TorusGraphMaps\npublic import Development.AbelianVarietyTheory.BlockTheory.CMModuli.UniformTorsionIsomorphism\npublic import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDescOfPoints\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.InjectiveOfIsAlgebraic\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCommonField\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsNsmulIffEq\n\n"}

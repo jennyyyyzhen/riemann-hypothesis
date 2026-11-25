@@ -7,7 +7,6 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsOfPoin
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUnifOfIsMumfordOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TautBaseChangeTripleLiftLeft
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 
@@ -21,8 +20,6 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.PolDeg.TautFrom
-
-open GlobalTheory.PolDeg.TautEx
 
 section Chart
 
@@ -62,53 +59,5 @@ theorem isoPull_isGen {A' B' : LB Y'} {A B : LB Y} {h : Y' ⟶ Y} (a : ChartPull
   rw [a.g y _ _ hy.1.2 hy.2.2, b.g y _ _ hy.1.1 hy.2.1]
 
 end Chart
-
-end GlobalTheory.PolDeg.TautFrom
-
-namespace GlobalTheory.PolDeg.TautFrom
-
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
-
-section Base
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-end Base
-
-end GlobalTheory.PolDeg.TautFrom
-
-namespace GlobalTheory.PolDeg.TautFrom
-
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
-
-section Iso
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-end Iso
-
-end GlobalTheory.PolDeg.TautFrom
-
-namespace GlobalTheory.PolDeg.TautFrom
-
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
-
-section Val
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-end Val
-
-end GlobalTheory.PolDeg.TautFrom
-
-namespace GlobalTheory.PolDeg.TautFrom
-
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
-
-section Main
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-end Main
 
 end GlobalTheory.PolDeg.TautFrom
