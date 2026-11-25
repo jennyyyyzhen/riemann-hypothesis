@@ -48,37 +48,30 @@ theorem exists_isPullback_pow [IsCommMonObj G] (i : T ⟶ G) (q : G ⟶ B) [IsMo
     {p : P' ⟶ P} {y : P' ⟶ G} (hP' : IsPullback y p q b)
     {s : Q ⟶ P'} {r : Q ⟶ G} (hQ : IsPullback s r p φ) :
     ∃ (c : P' ⟶ T) (t : Q ⟶ T), IsPullback s t c ((𝟙 T) ^ N) := by
-  have inj : ∀ {W : Over S} {x y : W ⟶ T}, x ≫ i = y ≫ i → x = y := fun h =>
-    hk.hom_ext h (toUnit_unique _ _)
+  have inj : ∀ {W : Over S} {x y : W ⟶ T}, x ≫ i = y ≫ i → x = y := fun h => hk.hom_ext h (toUnit_unique _ _)
   have ex : ∀ {W : Over S} (x : W ⟶ G), x ≫ q = 1 → ∃ y : W ⟶ T, y ≫ i = x := fun x h =>
     ⟨hk.lift x (toUnit _) (by rw [h, Hom.one_def]), hk.lift_fst _ _ _⟩
   have hiq : i ≫ q = 1 := by rw [hk.w, Hom.one_def]
   obtain ⟨c, hc⟩ := ex ((p ≫ a) / y ^ N) (by
     rw [GrpObj.div_comp, Category.assoc, hP.w, MonObj.pow_comp, hP'.w, ← Category.assoc, MonObj.comp_pow,
       Category.comp_id, div_self'])
-  have hsr : s ≫ y ≫ q = r ≫ q := by
-    rw [hP'.w, ← Category.assoc, hQ.w, Category.assoc, hφb]
   have hsa : s ≫ p ≫ a = r ^ N := by
     rw [← Category.assoc, hQ.w, Category.assoc, hφa, MonObj.comp_pow, Category.comp_id]
   obtain ⟨t, ht⟩ := ex (r / (s ≫ y)) (by
-    rw [GrpObj.div_comp, Category.assoc, hsr, div_self'])
+    rw [GrpObj.div_comp, Category.assoc, hP'.w, ← Category.assoc, hQ.w, Category.assoc, hφb, div_self'])
   refine ⟨c, t, ⟨?_⟩, ⟨PullbackCone.isLimitAux' _ fun W => ?_⟩⟩
-  · apply inj
-    rw [MonObj.comp_pow, Category.comp_id, MonObj.pow_comp, ht, div_pow, Category.assoc, hc, GrpObj.comp_div, hsa,
-      MonObj.comp_pow]
+  · exact inj (by rw [MonObj.comp_pow, Category.comp_id, MonObj.pow_comp, ht, div_pow, Category.assoc, hc,
+      GrpObj.comp_div, hsa, MonObj.comp_pow])
   · have hW : W.fst ≫ c = W.snd ^ N := by rw [W.condition, MonObj.comp_pow, Category.comp_id]
-    have hl : W.fst ≫ p = ((W.snd ≫ i) * (W.fst ≫ y)) ≫ φ := by
-      refine hP.hom_ext ?_ ?_
-      · rw [Category.assoc, Category.assoc, hφa, MonObj.comp_pow, Category.comp_id, mul_pow,
-          ← MonObj.pow_comp _ _ i, ← hW, Category.assoc, hc, GrpObj.comp_div, MonObj.comp_pow, div_mul_cancel]
-      · rw [Category.assoc, Category.assoc, hφb, MonObj.mul_comp, Category.assoc, Category.assoc, hiq,
-          MonObj.comp_one, _root_.one_mul, hP'.w]
-    refine ⟨hQ.lift W.fst _ hl, hQ.lift_fst _ _ _, ?_, ?_⟩
-    · apply inj
-      change (_ ≫ t) ≫ i = _
+    have hl : W.fst ≫ p = ((W.snd ≫ i) * (W.fst ≫ y)) ≫ φ := hP.hom_ext
+      (by rw [Category.assoc, Category.assoc, hφa, MonObj.comp_pow, Category.comp_id, mul_pow,
+        ← MonObj.pow_comp _ _ i, ← hW, Category.assoc, hc, GrpObj.comp_div, MonObj.comp_pow, div_mul_cancel])
+      (by rw [Category.assoc, Category.assoc, hφb, MonObj.mul_comp, Category.assoc, Category.assoc, hiq,
+        MonObj.comp_one, _root_.one_mul, hP'.w])
+    refine ⟨hQ.lift W.fst _ hl, hQ.lift_fst _ _ _, inj ?_, ?_⟩
+    · change (_ ≫ t) ≫ i = _
       rw [Category.assoc, ht, GrpObj.comp_div, ← Category.assoc, hQ.lift_fst, hQ.lift_snd, mul_div_cancel_right]
     · intro (m : W.pt ⟶ Q) (h1 : m ≫ s = W.fst) (h2 : m ≫ t = W.snd)
-      change m = _
       refine hQ.hom_ext (by rw [hQ.lift_fst, h1]) ?_
       rw [hQ.lift_snd, ← h1, ← h2, Category.assoc, Category.assoc, ht, GrpObj.comp_div, div_mul_cancel]
 
@@ -94,12 +87,11 @@ theorem of_pow_kernel (Pr : MorphismProperty Scheme.{0}) [Pr.IsStableUnderBaseCh
   have hQ := IsPullback.of_hasPullback (pullback.snd q b) φ
   obtain ⟨c, t, H⟩ := exists_isPullback_pow i q hk N hP hφa hφb hP' hQ
   have hP'' := hP'.map (Over.forget S)
-  refine MorphismProperty.of_isPullback_of_descendsAlong (P := Pr)
-    (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) (hQ.map (Over.forget S)) ⟨⟨?_, ?_⟩, ?_⟩ ?_
-  · exact MorphismProperty.of_isPullback (P := @Surjective) hP'' ‹_›
-  · exact MorphismProperty.of_isPullback (P := @Flat) hP'' ‹_›
-  · exact MorphismProperty.of_isPullback (P := @QuasiCompact) hP'' ‹_›
-  · exact MorphismProperty.of_isPullback (P := Pr) (H.map (Over.forget S)).flip h
+  exact MorphismProperty.of_isPullback_of_descendsAlong (P := Pr)
+    (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) (hQ.map (Over.forget S))
+    ⟨⟨MorphismProperty.of_isPullback hP'' ‹_›, MorphismProperty.of_isPullback hP'' ‹_›⟩,
+      MorphismProperty.of_isPullback hP'' ‹_›⟩
+    (MorphismProperty.of_isPullback (H.map (Over.forget S)).flip h)
 
 end General
 
@@ -108,41 +100,30 @@ theorem pow_of_isGt {S : Scheme.{0}} (E : SplitExt S) (G : Over S) [GrpObj G] [I
     (h3 : Surjective ((𝟙 E.B) ^ N : E.B ⟶ E.B).left) :
     IsFinite ((𝟙 G) ^ N : G ⟶ G).left ∧ Flat ((𝟙 G) ^ N : G ⟶ G).left ∧ Surjective ((𝟙 G) ^ N : G ⟶ G).left := by
   obtain ⟨D⟩ := hG
-  have := D.q_hom
-  have := D.i_hom
-  have := D.q_flat
-  have := D.q_surjective
-  have := D.q_affine
-  have := E.free
-  have := E.finite
-  have hN' : N ≠ 0 := by omega
+  have := D.q_hom; have := D.i_hom; have := D.q_flat; have := D.q_surjective; have := D.q_affine
+  have := E.free; have := E.finite
+  have hN' : N ≠ 0 := Nat.ne_of_gt hN
   have hf : IsFinite (mulN (splitTorus S E.X) N).left := Diag.isFinite_mulN S E.X hN'
   have hl : Flat (mulN (splitTorus S E.X) N).left := Diag.flat_mulN S E.X hN'
   have hs : Surjective (mulN (splitTorus S E.X) N).left := Diag.surjective_mulN S E.X hN'
   rw [MulEtaleDvr.mulN_eq_pow] at hf hl hs
-  have := flat_descendsAlong_fpqc
-  have := isAffineHom_descendsAlong_fpqc.{0}
+  have := flat_descendsAlong_fpqc; have := isAffineHom_descendsAlong_fpqc.{0}
   have hP := IsPullback.of_hasPullback D.q ((𝟙 E.B) ^ N)
   have w : ((𝟙 G) ^ N) ≫ D.q = D.q ≫ ((𝟙 E.B) ^ N) := by
     rw [MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]
   have ha := hP.lift_fst _ _ w
   have hb := hP.lift_snd _ _ w
-  have a0 : Surjective (hP.lift _ _ w).left := of_pow_kernel @Surjective D.i D.q D.isKernel N hP ha hb hs
-  have a1 : Flat (hP.lift _ _ w).left := of_pow_kernel @Flat D.i D.q D.isKernel N hP ha hb hl
-  have a2 : IsAffineHom (hP.lift _ _ w).left :=
-    of_pow_kernel @IsAffineHom D.i D.q D.isKernel N hP ha hb inferInstance
-  have a3 : UniversallyClosed (hP.lift _ _ w).left :=
-    of_pow_kernel @UniversallyClosed D.i D.q D.isKernel N hP ha hb inferInstance
-  have a4 : LocallyOfFiniteType (hP.lift _ _ w).left :=
-    of_pow_kernel @LocallyOfFiniteType D.i D.q D.isKernel N hP ha hb inferInstance
-  have a5 : IsFinite (hP.lift _ _ w).left :=
-    (IsFinite.iff_isIntegralHom_and_locallyOfFiniteType _).mpr
-      ⟨IsIntegralHom.iff_universallyClosed_and_isAffineHom.mpr ⟨a3, a2⟩, a4⟩
+  have : Surjective (hP.lift _ _ w).left := of_pow_kernel @Surjective D.i D.q D.isKernel N hP ha hb hs
+  have : Flat (hP.lift _ _ w).left := of_pow_kernel @Flat D.i D.q D.isKernel N hP ha hb hl
+  have a2 : IsAffineHom (hP.lift _ _ w).left := of_pow_kernel @IsAffineHom D.i D.q D.isKernel N hP ha hb inferInstance
+  have a3 : UniversallyClosed (hP.lift _ _ w).left := of_pow_kernel @UniversallyClosed D.i D.q D.isKernel N hP ha hb inferInstance
+  have a4 : LocallyOfFiniteType (hP.lift _ _ w).left := of_pow_kernel @LocallyOfFiniteType D.i D.q D.isKernel N hP ha hb inferInstance
+  have : IsFinite (hP.lift _ _ w).left :=
+    (IsFinite.iff_isIntegralHom_and_locallyOfFiniteType _).mpr ⟨IsIntegralHom.iff_universallyClosed_and_isAffineHom.mpr ⟨a3, a2⟩, a4⟩
   have hP' := (hP.map (Over.forget S)).flip
-  have b1 : IsFinite (pullback.fst D.q ((𝟙 E.B) ^ N)).left := MorphismProperty.of_isPullback (P := @IsFinite) hP' h1
-  have b2 : Flat (pullback.fst D.q ((𝟙 E.B) ^ N)).left := MorphismProperty.of_isPullback (P := @Flat) hP' h2
-  have b3 : Surjective (pullback.fst D.q ((𝟙 E.B) ^ N)).left :=
-    MorphismProperty.of_isPullback (P := @Surjective) hP' h3
+  have : IsFinite (pullback.fst D.q ((𝟙 E.B) ^ N)).left := MorphismProperty.of_isPullback hP' h1
+  have : Flat (pullback.fst D.q ((𝟙 E.B) ^ N)).left := MorphismProperty.of_isPullback hP' h2
+  have : Surjective (pullback.fst D.q ((𝟙 E.B) ^ N)).left := MorphismProperty.of_isPullback hP' h3
   rw [← ha, Over.comp_left]
   exact ⟨inferInstance, inferInstance, inferInstance⟩
 
@@ -180,6 +161,9 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.Mum GlobalTheory.TorusModel GlobalTheory.TorusCoordPull
 
 namespace GlobalTheory.FormalModel
+
+private lemma mul_eq_of_ofMul {G : Type*} [CommGroup G] {a b : G} (h : Additive.ofMul a = Additive.ofMul b) : a = b :=
+  Additive.ofMul.injective h
 
 theorem exists_cocycle_unit {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {c : X' ⟶ X'} (hc : c ≫ F = F)
     (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull F)} {v : LB.Iso L' (L'.pull c)} (hw : PGen w) (hv : PGen v) :
@@ -223,14 +207,12 @@ theorem prod_cocycle {X S : Scheme.{0}} {B : Over S} [GrpObj B] (hB : IsAbelianS
       ∏ k, om w z J J' (q k) ^ Oinvε k := by
   obtain ⟨u, hu⟩ := exists_cocycle_unit hc hL hL' hw hv
   obtain ⟨u₀, hu₀⟩ := (globalFns_holds _ _ hB).2 u.val
-  have cst : ∀ k, gm (q k) z ⊤ u = gm (q 2) z ⊤ u := fun k => by
-    refine Units.ext ?_
+  have cst : ∀ k, gm (q k) z ⊤ u = gm (q 2) z ⊤ u := fun k => Units.ext <| by
     rw [← gs_unit (q k) z ⊤ trivial, ← gs_unit (q 2) z ⊤ trivial, ← hu₀]
     exact (gs_pull _ B.hom z ⊤ trivial u₀).trans ((congrArg (fun q => gs q z ⊤ u₀) (hq k)).trans
       (gs_pull _ B.hom z ⊤ trivial u₀).symm)
   have key : ∀ k, om w z J J' (q' k) * om v z J' J' (q k) = gm (q 2) z ⊤ u * om w z J J' (q k) := fun k => by
-    rw [← hq' k, ← cst k]
-    exact hu _ _ z J J' hJ hJ'
+    rw [← hq' k, ← cst k]; exact hu _ _ z J J' hJ hJ'
   rw [← Finset.prod_mul_distrib]
   simp only [← mul_zpow, key]
   simp only [mul_zpow, Finset.prod_mul_distrib]
@@ -261,8 +243,8 @@ theorem exists_gtPt_up {T' : Over (Sp R')} (g' : GtPt D' T') : ∃ g : GtPt D (O
       hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf ρ) := funext fun k => ((hψ χ k).trans (Category.id_comp _)).symm
     rw [e]
     obtain ⟨t, ht, h⟩ := exists_up hw D.P.isLB D'.P.isLB (g'.s (hD.xe.symm χ)) (g'.isGen _)
-    refine ⟨t, ht, fun Z r z p q hp hq => ?_⟩
-    exact (congrArg (fun r => gm r z _ _) (Category.comp_id r)).trans (h Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq))
+    exact ⟨t, ht, fun Z r z p q hp hq =>
+      (congrArg (fun r => gm r z _ _) (Category.comp_id r)).trans (h Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq))⟩
   choose t ht H using ex
   have vt : ∀ y (Z : Scheme.{0}) (r : Z ⟶ T'.left) (z : Z) J J', Good D.P.L z J → Good D'.P.L z J' →
       val (t (hD.xe y)) r z J =
@@ -275,18 +257,15 @@ theorem exists_gtPt_up {T' : Over (Sp R')} (g' : GtPt D' T') : ∃ g : GtPt D (O
       (ConstFam.wVal hD.w z J J' (cP D' T' y * g'.b).left)⁻¹ * ConstFam.wVal hD.w z J J' (cP D' T' y).left *
         ConstFam.wVal hD.w z J J' g'.b.left * (ConstFam.wVal hD.w z J J' (1 : T' ⟶ D'.P.A).left)⁻¹ *
         cv g' y z J' := fun y z J J' hJ hJ' => by
-    have v := vt y _ (𝟙 _) z J J' hJ hJ'
     have p := FormalPoint.prod_gtφT (𝟙 T') g'.b y (ConstFam.wVal hD.w z J J')
     rw [Category.id_comp] at p
-    exact v.trans (congrArg (· * _) p)
+    exact (vt y _ (𝟙 _) z J J' hJ hJ').trans (congrArg (· * _) p)
   obtain ⟨g, hg, hv⟩ := exists_pt b t ht (fun χ _ _ _ => rfl) (fun z J hJ => by
       obtain ⟨J', hJ'⟩ := exists_good' D'.P.isLB z
       have v := vt' 0 z J J' hJ hJ'
       rw [map_zero, cv_zero g' hJ', cPoint_zero, _root_.one_mul] at v
-      refine v.trans ?_
-      apply Additive.ofMul.injective
-      simp only [ofMul_mul, ofMul_inv, ofMul_one]
-      abel) (fun χ χ' z J hJ => by
+      refine v.trans (mul_eq_of_ofMul ?_)
+      simp only [ofMul_mul, ofMul_inv, ofMul_one]; abel) (fun χ χ' z J hJ => by
       obtain ⟨y, rfl⟩ := hD.xe.surjective χ
       obtain ⟨y', rfl⟩ := hD.xe.surjective χ'
       obtain ⟨J', hJ'⟩ := exists_good' D'.P.isLB z
@@ -296,11 +275,9 @@ theorem exists_gtPt_up {T' : Over (Sp R')} (g' : GtPt D' T') : ∃ g : GtPt D (O
       have v₂ := vt' y' z J J' hJ hJ'
       have v₃ := vt' (y + y') z J J' hJ hJ'
       rw [cPoint_add, map_add (f := _)] at v₃
-      have e := cv_add g' hJ' y y'
       refine (congrArg₂ (fun a b : (T'.left.presheaf.stalk z)ˣ => a * b) v₃ c).trans
-        (Eq.trans ?_ (congrArg₂ (· * ·) v₁ v₂).symm)
-      apply Additive.ofMul.injective
-      have a₁ := congrArg Additive.ofMul e
+        (Eq.trans (mul_eq_of_ofMul ?_) (congrArg₂ (· * ·) v₁ v₂).symm)
+      have a₁ := congrArg Additive.ofMul (cv_add g' hJ' y y')
       simp only [ofMul_mul, ofMul_inv] at a₁ ⊢
       linear_combination (norm := abel) a₁)
   exact ⟨g, congrArg (·.left) hg, fun y Z r z J J' hJ hJ' => (hv _ Z r z J hJ).trans (vt y Z r z J J' hJ hJ')⟩
@@ -308,20 +285,7 @@ theorem exists_gtPt_up {T' : Over (Sp R')} (g' : GtPt D' T') : ∃ g : GtPt D (O
 section Model
 
 variable {I : Ideal R'} {E : DegData R' I} {hE : IsPullDeg ρ D E.toPre} {A' : PolAV (Sp (FractionRing R'))}
-  {G' : Over (Sp R')} [GrpObj G'] [IsCommMonObj G'] {Y : Over (Sp R)} [GrpObj Y] {Φ : ∀ T, (T ⟶ Y) ≃ GtPt D T}
-
-theorem hom_ext (hΦ : Represents Φ) {Z : Scheme.{0}} {r r' : Z ⟶ Y.left}
-    (hb : r ≫ (Φ Y (𝟙 Y)).b.left = r' ≫ (Φ Y (𝟙 Y)).b.left)
-    (hv : ∀ χ z J, Good D.P.L z J → val ((Φ Y (𝟙 Y)).s χ) r z J = val ((Φ Y (𝟙 Y)).s χ) r' z J) : r = r' := by
-  have w : r' ≫ Y.hom = r ≫ Y.hom := by rw [← Over.w (Φ Y (𝟙 Y)).b, ← Category.assoc, ← hb, Category.assoc]
-  let k : Over.mk (r ≫ Y.hom) ⟶ Y := Over.homMk r rfl
-  let k' : Over.mk (r ≫ Y.hom) ⟶ Y := Over.homMk r' w
-  have h₁ := hΦ.1 _ _ k (𝟙 Y)
-  have h₂ := hΦ.1 _ _ k' (𝟙 Y)
-  rw [Category.comp_id, isPull_iff] at h₁ h₂
-  exact congrArg (·.left) ((Φ _).injective (pt_ext (h₁.1.trans ((Over.OverMorphism.ext hb).trans h₂.1.symm))
-    fun χ z J hJ => (h₁.2 χ z J hJ).trans ((hv χ z J hJ).trans (h₂.2 χ z J hJ).symm)) : k = k')
-
+  {G' : Over (Sp R')} [GrpObj G'] [IsCommMonObj G'] {Y : Over (Sp R)}
 
 variable (hE) in
 def Carries {e : ℕ} (c : GtCoord I E.toPre e G') (g : GtPt D Y) (φ : (thickObj R' I e G').left ⟶ Y.left) : Prop :=
@@ -330,26 +294,10 @@ def Carries {e : ℕ} (c : GtCoord I E.toPre e G') (g : GtPt D Y) (φ : (thickOb
       val (g.s (hE.xe y)) (r ≫ φ) z J =
         (∏ k, om hE.w z J J' (r ≫ E.toPre.Oφ c.pG y k) ^ Oinvε k) * val (c.t y) r z J'
 
-variable (hE) in
-theorem exists_carries (hΦ : Represents Φ) {e : ℕ} (c : GtCoord I E.toPre e G') :
-    ∃ φ, Carries hE c (Φ Y (𝟙 Y)) φ := by
-  obtain ⟨ξ, hξ⟩ := TorusCoord.exists_isPointOf c (T := (Over.map (thick R' I e)).obj (thickObj R' I e G')) (𝟙 _)
-    (Category.id_comp _)
-  obtain ⟨g, hb, hv⟩ := exists_gtPt_up hE ξ
-  have hp : ξ.b = c.pG := Over.OverMorphism.ext (hξ.1.trans (Category.id_comp _))
-  have h := hΦ.1 _ _ ((Φ _).symm g) (𝟙 Y)
-  rw [Category.comp_id, Equiv.apply_symm_apply] at h
-  refine ⟨((Φ _).symm g).left, by rw [← hp]; exact hb.symm.trans h.1, fun y Z r z J J' hJ hJ' => ?_⟩
-  refine ((val_corr hJ (h.2 _) r).trans (val_pull hJ _ _ _)).symm.trans ((hv y Z r z J J' hJ hJ').trans
-    (congrArg₂ (· * ·) (by rw [TorusCoord.gtφT_eq, hp]; rfl) ?_))
-  exact (val_corr hJ' (hξ.2 y) r).trans ((val_pull hJ' _ _ _).trans (by rw [Category.comp_id]))
-
-omit [GrpObj Y] in
 theorem Carries.w {e : ℕ} {c : GtCoord I E.toPre e G'} {g : GtPt D Y} {φ} (h : Carries hE c g φ) :
     φ ≫ Y.hom = (thickObj R' I e G').hom ≫ thick R' I e ≫ spMap ρ :=
   (over_base hE g.b c.pG φ h.1).trans (Category.assoc _ _ _)
 
-omit [GrpObj Y] in
 theorem Carries.ext {e : ℕ} {c : GtCoord I E.toPre e G'} {g : GtPt D Y} {φ} (h : Carries hE c g φ) {Z : Scheme.{0}}
     {y y' : Z ⟶ (thickObj R' I e G').left} (h₁ : y ≫ φ = y' ≫ φ)
     (h₂ : y ≫ (thickObj R' I e G').hom = y' ≫ (thickObj R' I e G').hom) : y = y' := by
@@ -365,6 +313,34 @@ theorem Carries.ext {e : ℕ} {c : GtCoord I E.toPre e G'} {g : GtPt D Y} {φ} (
   rw [h₁, b] at a
   simp only [o] at a
   exact (mul_left_cancel a).symm
+
+variable [GrpObj Y] {Φ : ∀ T, (T ⟶ Y) ≃ GtPt D T}
+
+theorem hom_ext (hΦ : Represents Φ) {Z : Scheme.{0}} {r r' : Z ⟶ Y.left}
+    (hb : r ≫ (Φ Y (𝟙 Y)).b.left = r' ≫ (Φ Y (𝟙 Y)).b.left)
+    (hv : ∀ χ z J, Good D.P.L z J → val ((Φ Y (𝟙 Y)).s χ) r z J = val ((Φ Y (𝟙 Y)).s χ) r' z J) : r = r' := by
+  have w : r' ≫ Y.hom = r ≫ Y.hom := by rw [← Over.w (Φ Y (𝟙 Y)).b, ← Category.assoc, ← hb, Category.assoc]
+  let k : Over.mk (r ≫ Y.hom) ⟶ Y := Over.homMk r rfl
+  let k' : Over.mk (r ≫ Y.hom) ⟶ Y := Over.homMk r' w
+  have h₁ := hΦ.1 _ _ k (𝟙 Y)
+  have h₂ := hΦ.1 _ _ k' (𝟙 Y)
+  rw [Category.comp_id, isPull_iff] at h₁ h₂
+  exact congrArg (·.left) ((Φ _).injective (pt_ext (h₁.1.trans ((Over.OverMorphism.ext hb).trans h₂.1.symm))
+    fun χ z J hJ => (h₁.2 χ z J hJ).trans ((hv χ z J hJ).trans (h₂.2 χ z J hJ).symm)) : k = k')
+
+variable (hE) in
+theorem exists_carries (hΦ : Represents Φ) {e : ℕ} (c : GtCoord I E.toPre e G') :
+    ∃ φ, Carries hE c (Φ Y (𝟙 Y)) φ := by
+  obtain ⟨ξ, hξ⟩ := TorusCoord.exists_isPointOf c (T := (Over.map (thick R' I e)).obj (thickObj R' I e G')) (𝟙 _)
+    (Category.id_comp _)
+  obtain ⟨g, hb, hv⟩ := exists_gtPt_up hE ξ
+  have hp : ξ.b = c.pG := Over.OverMorphism.ext (hξ.1.trans (Category.id_comp _))
+  have h := hΦ.1 _ _ ((Φ _).symm g) (𝟙 Y)
+  rw [Category.comp_id, Equiv.apply_symm_apply] at h
+  refine ⟨((Φ _).symm g).left, by rw [← hp]; exact hb.symm.trans h.1, fun y Z r z J J' hJ hJ' => ?_⟩
+  refine ((val_corr hJ (h.2 _) r).trans (val_pull hJ _ _ _)).symm.trans ((hv y Z r z J J' hJ hJ').trans
+    (congrArg₂ (· * ·) (by rw [TorusCoord.gtφT_eq, hp]; rfl) ?_))
+  exact (val_corr hJ' (hξ.2 y) r).trans ((val_pull hJ' _ _ _).trans (by rw [Category.comp_id]))
 
 theorem Carries.exists_lift (hΦ : Represents Φ) (U : UnifPre I E A' G') {e : ℕ} {φ}
     (h : Carries hE (U.gt e) (Φ Y (𝟙 Y)) φ) {Z : Scheme.{0}} (r : Z ⟶ Y.left) (s : Z ⟶ Sp (R' ⧸ I ^ (e + 1)))
